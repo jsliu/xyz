@@ -61,7 +61,7 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
 #' @export
 #' @useDynLib xyz
 #' @importFrom Rcpp sourceCpp
-xyz_regression<-function(X,Y,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,standardize=TRUE,
+xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,standardize=TRUE,
                          standardize_response=TRUE) {
   L<-round(L)
   if(L < 1) {
@@ -99,12 +99,15 @@ xyz_regression<-function(X,Y,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,standardize
   if(standardize_response) {
     Y<-scale(Y)
   }
+  if(is.null(weights)) {
+    weights <- rep(1.0/n,n)
+  }
   if(is.null(lambdas)) {
     lambdas<-rep(-1,n_lambda)
   }
   max_main_effects<-100
   max_interaction_effects<-20
-  result<-gaussiglmnet(X, Y, lambdas, alpha,standardize, max_main_effects, max_interaction_effects, 2, L)
+  result<-gaussiglmnet(X, Y, weights, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, 2, L)
   L<-length(result[[1]])
   for(i in 1:L) {
     result[[1]][[i]]<-result[[1]][[i]]+1

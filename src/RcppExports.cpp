@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // order_vector
 IntegerVector order_vector(NumericVector x, bool decreasing);
-RcppExport SEXP xyz_order_vector(SEXP xSEXP, SEXP decreasingSEXP) {
+RcppExport SEXP _xyz_order_vector(SEXP xSEXP, SEXP decreasingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // sort_using_order_numvec
 void sort_using_order_numvec(NumericVector x, const IntegerVector& x_o);
-RcppExport SEXP xyz_sort_using_order_numvec(SEXP xSEXP, SEXP x_oSEXP) {
+RcppExport SEXP _xyz_sort_using_order_numvec(SEXP xSEXP, SEXP x_oSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
@@ -30,7 +30,7 @@ END_RCPP
 }
 // sort_using_order_intmat
 void sort_using_order_intmat(IntegerMatrix x, const IntegerVector x_o);
-RcppExport SEXP xyz_sort_using_order_intmat(SEXP xSEXP, SEXP x_oSEXP) {
+RcppExport SEXP _xyz_sort_using_order_intmat(SEXP xSEXP, SEXP x_oSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerMatrix >::type x(xSEXP);
@@ -41,7 +41,7 @@ END_RCPP
 }
 // sample_uniform
 IntegerVector sample_uniform(int range, int n);
-RcppExport SEXP xyz_sample_uniform(SEXP rangeSEXP, SEXP nSEXP) {
+RcppExport SEXP _xyz_sample_uniform(SEXP rangeSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -53,7 +53,7 @@ END_RCPP
 }
 // sample_int_replace
 IntegerVector sample_int_replace(NumericVector probabilities, int n);
-RcppExport SEXP xyz_sample_int_replace(SEXP probabilitiesSEXP, SEXP nSEXP) {
+RcppExport SEXP _xyz_sample_int_replace(SEXP probabilitiesSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -65,7 +65,7 @@ END_RCPP
 }
 // prod_matrix_vector
 NumericMatrix prod_matrix_vector(IntegerMatrix X, NumericVector r);
-RcppExport SEXP xyz_prod_matrix_vector(SEXP XSEXP, SEXP rSEXP) {
+RcppExport SEXP _xyz_prod_matrix_vector(SEXP XSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -77,7 +77,7 @@ END_RCPP
 }
 // colsum_index
 NumericVector colsum_index(NumericMatrix X, IntegerVector indexes);
-RcppExport SEXP xyz_colsum_index(SEXP XSEXP, SEXP indexesSEXP) {
+RcppExport SEXP _xyz_colsum_index(SEXP XSEXP, SEXP indexesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -89,7 +89,7 @@ END_RCPP
 }
 // absolute_covariates
 NumericVector absolute_covariates(NumericMatrix X, NumericVector Y);
-RcppExport SEXP xyz_absolute_covariates(SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP _xyz_absolute_covariates(SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -101,7 +101,7 @@ END_RCPP
 }
 // absolute_covariates_pairs
 NumericVector absolute_covariates_pairs(IntegerMatrix pairs, NumericMatrix X, NumericVector Y);
-RcppExport SEXP xyz_absolute_covariates_pairs(SEXP pairsSEXP, SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP _xyz_absolute_covariates_pairs(SEXP pairsSEXP, SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -114,7 +114,7 @@ END_RCPP
 }
 // clean_pairs
 IntegerMatrix clean_pairs(IntegerMatrix pairs);
-RcppExport SEXP xyz_clean_pairs(SEXP pairsSEXP) {
+RcppExport SEXP _xyz_clean_pairs(SEXP pairsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -125,7 +125,7 @@ END_RCPP
 }
 // translate_to_binary
 IntegerMatrix translate_to_binary(NumericMatrix X, int max_number_of_iterations);
-RcppExport SEXP xyz_translate_to_binary(SEXP XSEXP, SEXP max_number_of_iterationsSEXP) {
+RcppExport SEXP _xyz_translate_to_binary(SEXP XSEXP, SEXP max_number_of_iterationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -137,7 +137,7 @@ END_RCPP
 }
 // estimate_background_interaction_frequency
 NumericVector estimate_background_interaction_frequency(IntegerMatrix X, IntegerVector Y, int number_of_samples);
-RcppExport SEXP xyz_estimate_background_interaction_frequency(SEXP XSEXP, SEXP YSEXP, SEXP number_of_samplesSEXP) {
+RcppExport SEXP _xyz_estimate_background_interaction_frequency(SEXP XSEXP, SEXP YSEXP, SEXP number_of_samplesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -150,7 +150,7 @@ END_RCPP
 }
 // find_strongest_pairs
 List find_strongest_pairs(List pairs, NumericMatrix X, NumericVector Y, int max_number_of_pairs);
-RcppExport SEXP xyz_find_strongest_pairs(SEXP pairsSEXP, SEXP XSEXP, SEXP YSEXP, SEXP max_number_of_pairsSEXP) {
+RcppExport SEXP _xyz_find_strongest_pairs(SEXP pairsSEXP, SEXP XSEXP, SEXP YSEXP, SEXP max_number_of_pairsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -164,7 +164,7 @@ END_RCPP
 }
 // equalpairs
 IntegerMatrix equalpairs(NumericVector u, NumericVector v, IntegerVector ou, IntegerVector ov, int max_number_of_pairs);
-RcppExport SEXP xyz_equalpairs(SEXP uSEXP, SEXP vSEXP, SEXP ouSEXP, SEXP ovSEXP, SEXP max_number_of_pairsSEXP) {
+RcppExport SEXP _xyz_equalpairs(SEXP uSEXP, SEXP vSEXP, SEXP ouSEXP, SEXP ovSEXP, SEXP max_number_of_pairsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -179,7 +179,7 @@ END_RCPP
 }
 // projected_equal_pairs
 List projected_equal_pairs(IntegerMatrix X, NumericVector Y, int number_of_runs, int max_number_of_collisions, bool negative);
-RcppExport SEXP xyz_projected_equal_pairs(SEXP XSEXP, SEXP YSEXP, SEXP number_of_runsSEXP, SEXP max_number_of_collisionsSEXP, SEXP negativeSEXP) {
+RcppExport SEXP _xyz_projected_equal_pairs(SEXP XSEXP, SEXP YSEXP, SEXP number_of_runsSEXP, SEXP max_number_of_collisionsSEXP, SEXP negativeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -194,7 +194,7 @@ END_RCPP
 }
 // naive_interaction_search
 List naive_interaction_search(NumericMatrix X, NumericVector Y, int max_number_of_pairs);
-RcppExport SEXP xyz_naive_interaction_search(SEXP XSEXP, SEXP YSEXP, SEXP max_number_of_pairsSEXP) {
+RcppExport SEXP _xyz_naive_interaction_search(SEXP XSEXP, SEXP YSEXP, SEXP max_number_of_pairsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -207,7 +207,7 @@ END_RCPP
 }
 // interaction_search
 List interaction_search(NumericMatrix X, NumericVector Y, int number_of_runs, int max_number_of_pairs, bool negative, bool binary);
-RcppExport SEXP xyz_interaction_search(SEXP XSEXP, SEXP YSEXP, SEXP number_of_runsSEXP, SEXP max_number_of_pairsSEXP, SEXP negativeSEXP, SEXP binarySEXP) {
+RcppExport SEXP _xyz_interaction_search(SEXP XSEXP, SEXP YSEXP, SEXP number_of_runsSEXP, SEXP max_number_of_pairsSEXP, SEXP negativeSEXP, SEXP binarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -223,7 +223,7 @@ END_RCPP
 }
 // interaction_search_low_level
 List interaction_search_low_level(IntegerMatrix X_binary, NumericMatrix X, NumericVector Y, int number_of_runs, int max_number_of_pairs);
-RcppExport SEXP xyz_interaction_search_low_level(SEXP X_binarySEXP, SEXP XSEXP, SEXP YSEXP, SEXP number_of_runsSEXP, SEXP max_number_of_pairsSEXP) {
+RcppExport SEXP _xyz_interaction_search_low_level(SEXP X_binarySEXP, SEXP XSEXP, SEXP YSEXP, SEXP number_of_runsSEXP, SEXP max_number_of_pairsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -238,7 +238,7 @@ END_RCPP
 }
 // soft_threshold
 double soft_threshold(double beta_tilde, double normalization, double lambda, double alpha);
-RcppExport SEXP xyz_soft_threshold(SEXP beta_tildeSEXP, SEXP normalizationSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
+RcppExport SEXP _xyz_soft_threshold(SEXP beta_tildeSEXP, SEXP normalizationSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -252,7 +252,7 @@ END_RCPP
 }
 // create_lambda_sequence
 NumericVector create_lambda_sequence(double lambda_max, int n_lambda, double factor_eps_inv);
-RcppExport SEXP xyz_create_lambda_sequence(SEXP lambda_maxSEXP, SEXP n_lambdaSEXP, SEXP factor_eps_invSEXP) {
+RcppExport SEXP _xyz_create_lambda_sequence(SEXP lambda_maxSEXP, SEXP n_lambdaSEXP, SEXP factor_eps_invSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -265,7 +265,7 @@ END_RCPP
 }
 // scan_main_effects
 bool scan_main_effects(const NumericMatrix& X, const NumericVector& Y, const NumericVector& residuals, List main_effects, List beta_main, const NumericVector& lambdas, double alpha, int r, int add_max, bool strong);
-RcppExport SEXP xyz_scan_main_effects(SEXP XSEXP, SEXP YSEXP, SEXP residualsSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP add_maxSEXP, SEXP strongSEXP) {
+RcppExport SEXP _xyz_scan_main_effects(SEXP XSEXP, SEXP YSEXP, SEXP residualsSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP add_maxSEXP, SEXP strongSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -285,7 +285,7 @@ END_RCPP
 }
 // scale_intr
 NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y);
-RcppExport SEXP xyz_scale_intr(SEXP XSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP) {
+RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -298,7 +298,7 @@ END_RCPP
 }
 // scan_intr_effects
 bool scan_intr_effects(const NumericMatrix& X, const NumericVector& Y, const IntegerMatrix& X_bin, const NumericVector& residuals, List intr_effects, List beta_intr, NumericMatrix& intr_vars, const NumericVector& lambdas, double alpha, int r, int projections, bool strong);
-RcppExport SEXP xyz_scan_intr_effects(SEXP XSEXP, SEXP YSEXP, SEXP X_binSEXP, SEXP residualsSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP projectionsSEXP, SEXP strongSEXP) {
+RcppExport SEXP _xyz_scan_intr_effects(SEXP XSEXP, SEXP YSEXP, SEXP X_binSEXP, SEXP residualsSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP projectionsSEXP, SEXP strongSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -320,7 +320,7 @@ END_RCPP
 }
 // update_intr_final
 void update_intr_final(List intr_effects, List beta_intr);
-RcppExport SEXP xyz_update_intr_final(SEXP intr_effectsSEXP, SEXP beta_intrSEXP) {
+RcppExport SEXP _xyz_update_intr_final(SEXP intr_effectsSEXP, SEXP beta_intrSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type intr_effects(intr_effectsSEXP);
@@ -331,7 +331,7 @@ END_RCPP
 }
 // calculate_xbeta
 NumericVector calculate_xbeta(const NumericMatrix& X, const NumericVector& Y, const NumericVector& intercept, const List main_effects, const List beta_main, const List intr_effects, const List beta_intr, const NumericMatrix& intr_vars, int r);
-RcppExport SEXP xyz_calculate_xbeta(SEXP XSEXP, SEXP YSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP) {
+RcppExport SEXP _xyz_calculate_xbeta(SEXP XSEXP, SEXP YSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -350,7 +350,7 @@ END_RCPP
 }
 // calculate_residuals
 NumericVector calculate_residuals(const NumericMatrix& X, const NumericVector& Y, const NumericVector& intercept, const List main_effects, const List beta_main, const List intr_effects, const List beta_intr, const NumericMatrix& intr_vars, int r);
-RcppExport SEXP xyz_calculate_residuals(SEXP XSEXP, SEXP YSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP) {
+RcppExport SEXP _xyz_calculate_residuals(SEXP XSEXP, SEXP YSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -369,7 +369,7 @@ END_RCPP
 }
 // iterate
 int iterate(const NumericMatrix& X, const NumericVector& Y, NumericVector& residuals, const NumericVector& intercept, const List main_effects, List beta_main, const List intr_effects, List beta_intr, const NumericMatrix& intr_vars, const NumericVector& weights, const NumericVector& lambdas, double alpha, int r, int maxiter_inner);
-RcppExport SEXP xyz_iterate(SEXP XSEXP, SEXP YSEXP, SEXP residualsSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP weightsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP maxiter_innerSEXP) {
+RcppExport SEXP _xyz_iterate(SEXP XSEXP, SEXP YSEXP, SEXP residualsSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP weightsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP maxiter_innerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -393,7 +393,7 @@ END_RCPP
 }
 // update_intr_vars
 NumericMatrix update_intr_vars(const NumericMatrix& X, List intr_effects, bool standardize, int r);
-RcppExport SEXP xyz_update_intr_vars(SEXP XSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
+RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -407,7 +407,7 @@ END_RCPP
 }
 // clean_all_effects
 void clean_all_effects(List main_effects, List beta_main, List intr_effects, List beta_intr, int r);
-RcppExport SEXP xyz_clean_all_effects(SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP rSEXP) {
+RcppExport SEXP _xyz_clean_all_effects(SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type main_effects(main_effectsSEXP);
@@ -421,7 +421,7 @@ END_RCPP
 }
 // warm_start
 void warm_start(List main_effects, List beta_main, List intr_effects, List beta_intr, int r);
-RcppExport SEXP xyz_warm_start(SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP rSEXP) {
+RcppExport SEXP _xyz_warm_start(SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type main_effects(main_effectsSEXP);
@@ -434,13 +434,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // gaussiglmnet
-List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs);
-RcppExport SEXP xyz_gaussiglmnet(SEXP XSEXP, SEXP YSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP standardizeSEXP, SEXP max_main_effectsSEXP, SEXP max_interaction_effectsSEXP, SEXP max_outerSEXP, SEXP number_of_nnis_runsSEXP) {
+List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs);
+RcppExport SEXP _xyz_gaussiglmnet(SEXP XSEXP, SEXP YSEXP, SEXP weightsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP standardizeSEXP, SEXP max_main_effectsSEXP, SEXP max_interaction_effectsSEXP, SEXP max_outerSEXP, SEXP number_of_nnis_runsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type lambdas(lambdasSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
@@ -448,7 +449,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type max_interaction_effects(max_interaction_effectsSEXP);
     Rcpp::traits::input_parameter< int >::type max_outer(max_outerSEXP);
     Rcpp::traits::input_parameter< int >::type number_of_nnis_runs(number_of_nnis_runsSEXP);
-    rcpp_result_gen = Rcpp::wrap(gaussiglmnet(X, Y, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs));
+    rcpp_result_gen = Rcpp::wrap(gaussiglmnet(X, Y, weights, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs));
     return rcpp_result_gen;
 END_RCPP
 }

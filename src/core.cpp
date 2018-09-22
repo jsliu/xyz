@@ -1148,7 +1148,7 @@ void warm_start(List main_effects, List beta_main,
 }
 
 // [[Rcpp::export]]
-List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
+List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
     int n = X.nrow(); int n_lambda = lambdas.size();
 
     int maxiter_inner=1000; int add_max_main = 100;
@@ -1159,11 +1159,11 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector lambdas, doubl
 
     for (int r = 0; r < n_lambda; ++r) { main_effects[r] = IntegerVector(1); intr_effects[r] = IntegerMatrix(2,1); beta_main[r] = NumericVector(1); beta_intr[r] = NumericVector(1); }
 
-    NumericVector intercept(n_lambda);  NumericMatrix intr_vars(n,1); NumericVector weights(n); NumericVector residuals(Y);
+    NumericVector intercept(n_lambda);  NumericMatrix intr_vars(n,1); NumericVector residuals(Y);
 
     intercept[0]=mean(Y);
 
-    for(int i = 0; i < n; ++i)  weights[i]=1.0/n;
+    //for(int i = 0; i < n; ++i)  weights[i]=1.0/n;
 
     NumericVector covs = absolute_covariates(X,residuals);
 
