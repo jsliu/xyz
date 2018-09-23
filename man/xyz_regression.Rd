@@ -4,8 +4,9 @@
 \alias{xyz_regression}
 \title{Elasticnet with interactions (glmnet)}
 \usage{
-xyz_regression(X, Y, lambdas = NULL, n_lambda = 10, alpha = 0.9, L = 10,
-  standardize = TRUE, standardize_response = TRUE)
+xyz_regression(X, Y, weights = NULL, lambdas = NULL, n_lambda = 10,
+  alpha = 0.9, L = 10, standardize = TRUE,
+  standardize_response = TRUE)
 }
 \arguments{
 \item{X}{A matrix.}
@@ -46,4 +47,3 @@ plot(result)
 \references{
 G. Thanei, N. Meinshausen and R. Shah (2016). The xyz algorithm for fast interaction search in high-dimensional data. <https://arxiv.org/pdf/1610.05108v1.pdf>
 }
-

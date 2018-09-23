@@ -948,7 +948,6 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
     int nr_main = temp_main_effects.size();
     int nr_intr = temp_intr_effects.ncol();
 
-
     /* update main effects */
     NumericVector temp_beta_main = beta_main[r];
 
@@ -961,7 +960,6 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
     double temp = 0.0;
     double beta_tilde = 0.0;
     int variable = 0;
-
 
     while (!converged && count_iterations < maxiter_inner) {
         converged = true;
@@ -978,8 +976,7 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
                     sum2 += temp*X(i,variable);
                 }
                 beta_tilde = soft_threshold(sum1+temp_beta_main[l],sum2,lambdas[r]*std::sqrt(2.0),alpha);
-
-
+                
                 if (std::abs(beta_tilde - temp_beta_main[l]) > update_precision) {
                     converged = false;
 

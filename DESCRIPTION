@@ -14,7 +14,7 @@ Imports:
   stats,
   Rcpp (>= 0.12.6)
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.0
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 SystemRequirements: C++11
