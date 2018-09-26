@@ -99,15 +99,18 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   if(standardize_response) {
     Y<-scale(Y)
   }
-  if(is.null(weights)) {
-    weights <- rep(1.0/n,n)
-  }
   if(is.null(lambdas)) {
     lambdas<-rep(-1,n_lambda)
   }
+  if(is.null(weights)) {
+    weights <- rep(1.0/n,n)
+  }
+
+  wts <- weights/sum(weights)
+  
   max_main_effects<-100
   max_interaction_effects<-20
-  result<-gaussiglmnet(X, Y, weights, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, 2, L)
+  result<-gaussiglmnet(X, Y, wts, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, 2, L)
   L<-length(result[[1]])
   for(i in 1:L) {
     result[[1]][[i]]<-result[[1]][[i]]+1
@@ -288,7 +291,7 @@ ic.xyz_regression<-function(x,y,crit=c("bic","aic","aicc","hqc"),...)
   }
   crit<-match.arg(crit)
   n<-length(y)
-  model <- xyz_regression(x = x, y = y, ...)
+  model <- xyz_regression(X = x, Y = y, ...)
   lambda <- model[[5]]
   df <- sapply(model[[1]],length) + sapply(model[[3]],length)
 

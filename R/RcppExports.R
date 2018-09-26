@@ -81,16 +81,16 @@ create_lambda_sequence <- function(lambda_max, n_lambda, factor_eps_inv) {
     .Call('_xyz_create_lambda_sequence', PACKAGE = 'xyz', lambda_max, n_lambda, factor_eps_inv)
 }
 
-scan_main_effects <- function(X, Y, residuals, main_effects, beta_main, lambdas, alpha, r, add_max, strong) {
-    .Call('_xyz_scan_main_effects', PACKAGE = 'xyz', X, Y, residuals, main_effects, beta_main, lambdas, alpha, r, add_max, strong)
+scan_main_effects <- function(X, Y, main_effects, beta_main, lambdas, alpha, r, add_max, strong) {
+    .Call('_xyz_scan_main_effects', PACKAGE = 'xyz', X, Y, main_effects, beta_main, lambdas, alpha, r, add_max, strong)
 }
 
 scale_intr <- function(X, pair_x, pair_y) {
     .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, pair_x, pair_y)
 }
 
-scan_intr_effects <- function(X, Y, X_bin, residuals, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong) {
-    .Call('_xyz_scan_intr_effects', PACKAGE = 'xyz', X, Y, X_bin, residuals, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong)
+scan_intr_effects <- function(X, Y, X_bin, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong) {
+    .Call('_xyz_scan_intr_effects', PACKAGE = 'xyz', X, Y, X_bin, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong)
 }
 
 update_intr_final <- function(intr_effects, beta_intr) {

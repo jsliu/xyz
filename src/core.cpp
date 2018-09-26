@@ -651,7 +651,7 @@ List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, Numeri
     result = naive_interaction_search(X,Y,max_number_of_pairs);
   } else {
     int max_number_of_collisions = 2*p;
-    List pairs = projected_equal_pairs(X_binary, Y,number_of_runs, max_number_of_collisions, true);
+    List pairs = projected_equal_pairs(X_binary,Y,number_of_runs, max_number_of_collisions, true);
     result = find_strongest_pairs(pairs,X,Y,max_number_of_pairs);
   }
   return result;
@@ -678,7 +678,7 @@ NumericVector create_lambda_sequence(double lambda_max, int n_lambda, double fac
 
 /*scans main effects and includes new potential candidates*/
 //[[Rcpp::export]]
-bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const NumericVector &residuals,List main_effects, List beta_main,
+bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, List main_effects, List beta_main,
                        const NumericVector &lambdas, double alpha, int r, int add_max, bool strong) {
     /*check if sequential strong rule is applied at very beginning of lambda sequence*/
     int p = X.ncol();
@@ -694,7 +694,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
         already_contained[temp_main_effects[l]] = true;
     }
 
-    NumericVector covs = absolute_covariates(X,residuals);
+    NumericVector covs = absolute_covariates(X,Y);
     IntegerVector order_covs = order_vector(covs,true);
 
     double threshold = alpha*lambdas[r];
@@ -773,7 +773,7 @@ NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y) {
 }
 
 //[[Rcpp::export]]
-bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const IntegerMatrix &X_bin, const NumericVector &residuals,
+bool scan_intr_effects(const NumericMatrix &X, const NumericVector& Y, const IntegerMatrix &X_bin,
                        List intr_effects, List beta_intr, NumericMatrix &intr_vars,
                        const NumericVector &lambdas, double alpha, int r, int projections, bool strong) {
 
@@ -784,7 +784,7 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const Int
 
     List result_interaction_search(2);
 
-    result_interaction_search = interaction_search_low_level(X_bin,X,residuals,projections,20);
+    result_interaction_search = interaction_search_low_level(X_bin,X,Y,projections,20);
     IntegerMatrix pairs_is = result_interaction_search(0);
 
     int number_considered = std::min(20,pairs_is.ncol());
@@ -805,12 +805,11 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const Int
     std::vector<int> indexes;
     indexes.reserve(number_considered);
 
-
     for (int l = 0; l < number_considered; ++l) {
         sum1 = 0.0;
         temp_itr = scale_intr(X,pairs_is(0,l),pairs_is(1,l));
-                for (int i = 0; i < n; ++i) {
-            sum1 += temp_itr[i]*residuals[i];
+        for (int i = 0; i < n; ++i) {
+            sum1 += temp_itr[i]*Y[i];
             intr_vars_new(i,l) = temp_itr[i];
         }
 
@@ -1146,6 +1145,7 @@ void warm_start(List main_effects, List beta_main,
 
 // [[Rcpp::export]]
 List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
+    
     int n = X.nrow(); int n_lambda = lambdas.size();
 
     int maxiter_inner=1000; int add_max_main = 100;
@@ -1160,7 +1160,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
     intercept[0]=mean(Y);
 
-    //for(int i = 0; i < n; ++i)  weights[i]=1.0/n;
+    //for(int i = 0; i < n; ++i) weights[i] = 1.0/n;
 
     NumericVector covs = absolute_covariates(X,residuals);
 
@@ -1174,13 +1174,13 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             changed = true;
 
-            changed = scan_main_effects(X,Y,residuals,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
+            changed = scan_main_effects(X,residuals,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 
             residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r);
 
-            changed = changed & scan_intr_effects(X,Y,X_bin,residuals,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,true);
+            changed = changed & scan_intr_effects(X,residuals,X_bin,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,true);
 
             intr_vars = update_intr_vars(X,intr_effects,standardize,r);
 
@@ -1209,7 +1209,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             beta_intr[r] = beta_intr[last_entry];
 
-            scan_main_effects(X,Y,residuals,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
+            scan_main_effects(X,residuals,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 

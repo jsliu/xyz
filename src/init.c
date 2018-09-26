@@ -30,8 +30,8 @@ extern SEXP _xyz_projected_equal_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_sample_int_replace(SEXP, SEXP);
 extern SEXP _xyz_sample_uniform(SEXP, SEXP);
 extern SEXP _xyz_scale_intr(SEXP, SEXP, SEXP);
-extern SEXP _xyz_scan_intr_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_scan_main_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_scan_intr_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_scan_main_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_soft_threshold(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_sort_using_order_intmat(SEXP, SEXP);
 extern SEXP _xyz_sort_using_order_numvec(SEXP, SEXP);
@@ -63,8 +63,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_xyz_sample_int_replace",                        (DL_FUNC) &_xyz_sample_int_replace,                         2},
     {"_xyz_sample_uniform",                            (DL_FUNC) &_xyz_sample_uniform,                             2},
     {"_xyz_scale_intr",                                (DL_FUNC) &_xyz_scale_intr,                                 3},
-    {"_xyz_scan_intr_effects",                         (DL_FUNC) &_xyz_scan_intr_effects,                         12},
-    {"_xyz_scan_main_effects",                         (DL_FUNC) &_xyz_scan_main_effects,                         10},
+    {"_xyz_scan_intr_effects",                         (DL_FUNC) &_xyz_scan_intr_effects,                         11},
+    {"_xyz_scan_main_effects",                         (DL_FUNC) &_xyz_scan_main_effects,                          9},
     {"_xyz_soft_threshold",                            (DL_FUNC) &_xyz_soft_threshold,                             4},
     {"_xyz_sort_using_order_intmat",                   (DL_FUNC) &_xyz_sort_using_order_intmat,                    2},
     {"_xyz_sort_using_order_numvec",                   (DL_FUNC) &_xyz_sort_using_order_numvec,                    2},

@@ -264,14 +264,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // scan_main_effects
-bool scan_main_effects(const NumericMatrix& X, const NumericVector& Y, const NumericVector& residuals, List main_effects, List beta_main, const NumericVector& lambdas, double alpha, int r, int add_max, bool strong);
-RcppExport SEXP _xyz_scan_main_effects(SEXP XSEXP, SEXP YSEXP, SEXP residualsSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP add_maxSEXP, SEXP strongSEXP) {
+bool scan_main_effects(const NumericMatrix& X, const NumericVector& Y, List main_effects, List beta_main, const NumericVector& lambdas, double alpha, int r, int add_max, bool strong);
+RcppExport SEXP _xyz_scan_main_effects(SEXP XSEXP, SEXP YSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP add_maxSEXP, SEXP strongSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type residuals(residualsSEXP);
     Rcpp::traits::input_parameter< List >::type main_effects(main_effectsSEXP);
     Rcpp::traits::input_parameter< List >::type beta_main(beta_mainSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type lambdas(lambdasSEXP);
@@ -279,7 +278,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
     Rcpp::traits::input_parameter< int >::type add_max(add_maxSEXP);
     Rcpp::traits::input_parameter< bool >::type strong(strongSEXP);
-    rcpp_result_gen = Rcpp::wrap(scan_main_effects(X, Y, residuals, main_effects, beta_main, lambdas, alpha, r, add_max, strong));
+    rcpp_result_gen = Rcpp::wrap(scan_main_effects(X, Y, main_effects, beta_main, lambdas, alpha, r, add_max, strong));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -297,15 +296,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // scan_intr_effects
-bool scan_intr_effects(const NumericMatrix& X, const NumericVector& Y, const IntegerMatrix& X_bin, const NumericVector& residuals, List intr_effects, List beta_intr, NumericMatrix& intr_vars, const NumericVector& lambdas, double alpha, int r, int projections, bool strong);
-RcppExport SEXP _xyz_scan_intr_effects(SEXP XSEXP, SEXP YSEXP, SEXP X_binSEXP, SEXP residualsSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP projectionsSEXP, SEXP strongSEXP) {
+bool scan_intr_effects(const NumericMatrix& X, const NumericVector& Y, const IntegerMatrix& X_bin, List intr_effects, List beta_intr, NumericMatrix& intr_vars, const NumericVector& lambdas, double alpha, int r, int projections, bool strong);
+RcppExport SEXP _xyz_scan_intr_effects(SEXP XSEXP, SEXP YSEXP, SEXP X_binSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP projectionsSEXP, SEXP strongSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type Y(YSEXP);
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type X_bin(X_binSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type residuals(residualsSEXP);
     Rcpp::traits::input_parameter< List >::type intr_effects(intr_effectsSEXP);
     Rcpp::traits::input_parameter< List >::type beta_intr(beta_intrSEXP);
     Rcpp::traits::input_parameter< NumericMatrix& >::type intr_vars(intr_varsSEXP);
@@ -314,7 +312,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
     Rcpp::traits::input_parameter< int >::type projections(projectionsSEXP);
     Rcpp::traits::input_parameter< bool >::type strong(strongSEXP);
-    rcpp_result_gen = Rcpp::wrap(scan_intr_effects(X, Y, X_bin, residuals, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong));
+    rcpp_result_gen = Rcpp::wrap(scan_intr_effects(X, Y, X_bin, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong));
     return rcpp_result_gen;
 END_RCPP
 }
