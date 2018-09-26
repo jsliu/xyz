@@ -326,7 +326,13 @@ ic.xyz_regression<-function(x,y,crit=c("bic","aic","aicc","hqc"),...)
 predict.ic.xyz_regression <- function(object, newdata, ...)
 {
   selected <- object$best.model
-  Y_pred_matrix <- predict(object$glmnet, newdata, ...)
-  Y_pred <- Y_pred_matrix[,selected]
-  return(Y_pred)
+  model <- object$glmnet
+  main_effects <- c(model[[1]][[selected]],1)
+  beta_main <- c(model[[2]][[selected]],0)
+  intr_effects <- cbind(model[[3]][[selected]],c(1,1))
+  beta_intr <- c(model[[4]][[selected]],0)
+  intercept <- model[[6]][selected]
+  Y_pred <- intercept+newdata[,main_effects]%*%beta_main+(newdata[,intr_effects[1,]]*newdata[,intr_effects[2,]])%*%beta_intr
+
+  return(as.vector(Y_pred))
 }
