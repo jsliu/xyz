@@ -2,6 +2,7 @@
 
 S3method(plot,xyz_regression_result)
 S3method(plot,xyz_search_result)
+S3method(predict,ic.xyz_regression)
 S3method(predict,xyz_regression_result)
 S3method(print,xyz_regression_result)
 S3method(print,xyz_search_result)

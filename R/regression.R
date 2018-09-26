@@ -321,3 +321,12 @@ ic.xyz_regression<-function(x,y,crit=c("bic","aic","aicc","hqc"),...)
   class(result) <- "ic.xyz_regression"
   return(result)
 }
+
+#' @export
+predict.ic.xyz_regression <- function(object, newdata, ...)
+{
+  selected <- object$best.model
+  Y_pred_matrix <- predict(object$glmnet, newdata, ...)
+  Y_pred <- Y_pred_matrix[,selected]
+  return(Y_pred)
+}
