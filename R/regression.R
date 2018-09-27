@@ -331,7 +331,7 @@ ic.xyz_regression<-function(x,y,crit=c("bic","aic","aicc","hqc"),...)
 }
 
 #' @export
-predict.ic.xyz_regression <- function(object, newdata, ...)
+coef.ic.xyz_regression <- function(object)
 {
   selected <- object$best.model
   model <- object$glmnet
@@ -340,7 +340,21 @@ predict.ic.xyz_regression <- function(object, newdata, ...)
   intr_effects <- cbind(model[[3]][[selected]],c(1,1))
   beta_intr <- c(model[[4]][[selected]],0)
   intercept <- model[[6]][selected]
+
+  return(list(main_effects=main_effects,beta_main=beta_main,intr_effects=intr_effects,beta_intr=beta_intr,intercept=intercept))
+}
+
+#' @export
+predict.ic.xyz_regression <- function(object, newdata, ...)
+{
+  coeffs <- coef(object)
+  main_effects <- coeffs$main_effects
+  beta_main <- coeffs$beta_main
+  intr_effects <- coeffs$intr_effects
+  beta_intr <- coeffs$beta_intr
+  intercept <- coeffs$intercept
   Y_pred <- intercept+newdata[,main_effects]%*%beta_main+(newdata[,intr_effects[1,]]*newdata[,intr_effects[2,]])%*%beta_intr
 
   return(as.vector(Y_pred))
 }
+
