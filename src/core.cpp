@@ -203,7 +203,7 @@ void copy_vector_to_column(NumericMatrix X, NumericVector Y, int k) {
 
 /* sum over columns of matrix for specific indexes */
 //[[Rcpp::export]]
-NumericVector absolute_covariates(NumericMatrix X, NumericVector Y) {
+NumericVector absolute_covariates(NumericMatrix X, NumericVector Y, NumericVector weights) {
     int p = X.ncol();
     int n = X.nrow();
     NumericVector abs_cov(p);
@@ -212,15 +212,15 @@ NumericVector absolute_covariates(NumericMatrix X, NumericVector Y) {
     for (int l = 0; l < p; ++l) {
         temp = 0.0;
         for (int i = 0; i < n; ++i) {
-            temp += X(i,l)*Y[i];
+            temp += X(i,l)*Y[i]*weights[i];
         }
-        abs_cov[l]=std::abs(temp)/n;
+        abs_cov[l]=std::abs(temp);
     }
     return abs_cov;
 }
 
 //[[Rcpp::export]]
-NumericVector absolute_covariates_pairs(IntegerMatrix pairs, NumericMatrix X, NumericVector Y) {
+NumericVector absolute_covariates_pairs(IntegerMatrix pairs, NumericMatrix X, NumericVector Y, NumericVector weights) {
     int n = X.nrow();
 
     int nr_pairs = pairs.ncol();
@@ -234,9 +234,9 @@ NumericVector absolute_covariates_pairs(IntegerMatrix pairs, NumericMatrix X, Nu
       k = pairs(1,j);
       temp = 0.0;
       for(int i = 0; i < n; ++i) {
-          temp += Y[i]*X(i,l)*X(i,k);
+          temp += Y[i]*X(i,l)*X(i,k)*weights[i];
       }
-      abs_cov[j]=std::abs(temp)/n;
+      abs_cov[j]=std::abs(temp);
     }
     return abs_cov;
 }
@@ -389,7 +389,7 @@ NumericVector estimate_background_interaction_frequency(IntegerMatrix X, Integer
 }
 
 //[[Rcpp::export]]
-List find_strongest_pairs(List pairs, NumericMatrix X, NumericVector Y, int max_number_of_pairs) {
+List find_strongest_pairs(List pairs, NumericMatrix X, NumericVector Y, NumericVector weights, int max_number_of_pairs) {
   int size_of_list = pairs.size();
 
   if(max_number_of_pairs > 500) stop("You consider too many pairs, usually one would only consider 10");
@@ -403,7 +403,7 @@ List find_strongest_pairs(List pairs, NumericMatrix X, NumericVector Y, int max_
   int counter = 0;
   for(int m = 0; m < size_of_list; ++m) {
     IntegerMatrix tempp = pairs(m);
-    temps = absolute_covariates_pairs(tempp,X,Y);
+    temps = absolute_covariates_pairs(tempp,X,Y,weights);
     otemps = order_vector(temps,true);
     sort_using_order_intmat(tempp,otemps);
     for(int j = 0; j <  std::min(max_number_of_pairs,tempp.ncol()); ++j) {
@@ -421,7 +421,7 @@ List find_strongest_pairs(List pairs, NumericMatrix X, NumericVector Y, int max_
   }
   temp_pairs = clean_pairs(tpairs);
 
-  temp_strength = absolute_covariates_pairs(temp_pairs,X,Y);
+  temp_strength = absolute_covariates_pairs(temp_pairs,X,Y,weights);
   otemps = order_vector(temp_strength,true);
   sort_using_order_intmat(temp_pairs,otemps);
 
@@ -578,7 +578,7 @@ List projected_equal_pairs(IntegerMatrix X, NumericVector Y, int number_of_runs,
 }
 
 //[[Rcpp::export]]
-List naive_interaction_search(NumericMatrix X, NumericVector Y, int max_number_of_pairs) {
+List naive_interaction_search(NumericMatrix X, NumericVector Y, NumericVector weights,int max_number_of_pairs) {
   int n = X.nrow();
   int p = X.ncol();
   IntegerMatrix pairs(2,(p*(p+1))/2);
@@ -589,7 +589,7 @@ List naive_interaction_search(NumericMatrix X, NumericVector Y, int max_number_o
     for(int l = k; l < p; ++l) {
       double temp = 0;
       for(int i = 0; i < n; ++i) {
-          temp += Y[i]*X(i,l)*X(i,k);
+          temp += Y[i]*X(i,l)*X(i,k)*weights[i];
       }
       pairs(0,count)=k;
       pairs(1,count)=l;
@@ -623,12 +623,12 @@ List naive_interaction_search(NumericMatrix X, NumericVector Y, int max_number_o
 }
 
 // [[Rcpp::export]]
-List interaction_search(NumericMatrix X, NumericVector Y, int number_of_runs, int max_number_of_pairs,bool negative,bool binary) {
+List interaction_search(NumericMatrix X, NumericVector Y, NumericVector weights, int number_of_runs, int max_number_of_pairs,bool negative,bool binary) {
   int n = X.nrow();
   int p = X.ncol();
   List result(2);
   if(p < 20) {
-    result = naive_interaction_search(X,Y,max_number_of_pairs);
+    result = naive_interaction_search(X,Y,weights,max_number_of_pairs);
   } else {
     IntegerMatrix X_binary(n,p);
     if(binary) {
@@ -638,21 +638,21 @@ List interaction_search(NumericMatrix X, NumericVector Y, int number_of_runs, in
     }
     int max_number_of_collisions = 2*p;
     List pairs = projected_equal_pairs(X_binary, Y,number_of_runs, max_number_of_collisions, negative);
-    result = find_strongest_pairs(pairs,X,Y,max_number_of_pairs);
+    result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs);
   }
   return result;
 }
 
 //[[Rcpp::export]]
-List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, NumericVector Y, int number_of_runs,int max_number_of_pairs) {
+List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, NumericVector Y, NumericVector weights, int number_of_runs,int max_number_of_pairs) {
   int p = X.ncol();
   List result(2);
   if(p < 20) {
-    result = naive_interaction_search(X,Y,max_number_of_pairs);
+    result = naive_interaction_search(X,Y,weights,max_number_of_pairs);
   } else {
     int max_number_of_collisions = 2*p;
     List pairs = projected_equal_pairs(X_binary,Y,number_of_runs, max_number_of_collisions, true);
-    result = find_strongest_pairs(pairs,X,Y,max_number_of_pairs);
+    result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs);
   }
   return result;
 }
@@ -678,7 +678,7 @@ NumericVector create_lambda_sequence(double lambda_max, int n_lambda, double fac
 
 /*scans main effects and includes new potential candidates*/
 //[[Rcpp::export]]
-bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, List main_effects, List beta_main,
+bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const NumericVector weights, List main_effects, List beta_main,
                        const NumericVector &lambdas, double alpha, int r, int add_max, bool strong) {
     /*check if sequential strong rule is applied at very beginning of lambda sequence*/
     int p = X.ncol();
@@ -694,7 +694,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, List main
         already_contained[temp_main_effects[l]] = true;
     }
 
-    NumericVector covs = absolute_covariates(X,Y);
+    NumericVector covs = absolute_covariates(X,Y,weights);
     IntegerVector order_covs = order_vector(covs,true);
 
     double threshold = alpha*lambdas[r];
@@ -773,7 +773,7 @@ NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y) {
 }
 
 //[[Rcpp::export]]
-bool scan_intr_effects(const NumericMatrix &X, const NumericVector& Y, const IntegerMatrix &X_bin,
+bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const IntegerMatrix &X_bin, const NumericVector &weights,
                        List intr_effects, List beta_intr, NumericMatrix &intr_vars,
                        const NumericVector &lambdas, double alpha, int r, int projections, bool strong) {
 
@@ -784,7 +784,7 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector& Y, const Int
 
     List result_interaction_search(2);
 
-    result_interaction_search = interaction_search_low_level(X_bin,X,Y,projections,20);
+    result_interaction_search = interaction_search_low_level(X_bin,X,Y,weights,projections,20);
     IntegerMatrix pairs_is = result_interaction_search(0);
 
     int number_considered = std::min(20,pairs_is.ncol());
@@ -1162,7 +1162,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
     //for(int i = 0; i < n; ++i) weights[i] = 1.0/n;
 
-    NumericVector covs = absolute_covariates(X,residuals);
+    NumericVector covs = absolute_covariates(X,residuals,weights);
 
     if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,n_lambda,10.0);
 
@@ -1174,13 +1174,13 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             changed = true;
 
-            changed = scan_main_effects(X,residuals,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
+            changed = scan_main_effects(X,residuals,weights,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 
             residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r);
 
-            changed = changed & scan_intr_effects(X,residuals,X_bin,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,true);
+            changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,true);
 
             intr_vars = update_intr_vars(X,intr_effects,standardize,r);
 
@@ -1209,7 +1209,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             beta_intr[r] = beta_intr[last_entry];
 
-            scan_main_effects(X,residuals,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
+            scan_main_effects(X,residuals,weights,main_effects,beta_main,lambdas,alpha,r,add_max_main,true);
 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 

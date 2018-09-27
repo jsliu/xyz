@@ -90,6 +90,9 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   if(length(Y) != n) {
     stop("Y and X have to have the same number of rows")
   }
+  if(length(weights) != n){
+    stop("weights and Y have to have the same number of rows")
+  }
   if(n < 10) {
     stop(paste("You have ",n," samples. The number of samples should at least be 10.",sep=""))
   }
