@@ -190,7 +190,7 @@ print.xyz_regression_result<-function(x,...,whichlambda=-1) {
 
 #' @importFrom graphics matplot legend
 #' @export
-plot.xyz_regression_result<-function(x,...) {
+plot.xyz_regression_result<-function(x,xvar=c("norm","lambda")) {
   if( length(x) != 6 ) {
     stop("fit has parts missing")
   }
@@ -260,8 +260,13 @@ plot.xyz_regression_result<-function(x,...) {
 
   beta_norm<-colSums(abs(all_paths))
 
+  xvar <- match.arg(xvar)
+  switch(xvar,
+        "norm"={xaxis=beta_norm; xlab="L1 Norm"},
+        "lambda"={xaxis=log(lambdas); xlab="Log Lambda"}
+        )
   colors_plot<-c(rep("blue",nr_main),rep("red",nr_intr))
-  matplot(beta_norm,t(all_paths),type="l",col=colors_plot,lty=1,lwd=2,ylab="coefficients",xlab="L1 Norm")
+  matplot(xaxis,t(all_paths),type="l",col=colors_plot,lty=1,lwd=2,ylab="coefficients",xlab=xlab)
   legend("topleft",legend=c("main effects","interaction effects"),lty=c(1,1),col=c("blue","red"))
 }
 
