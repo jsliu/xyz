@@ -84,6 +84,9 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
 
   n<-dim(X)[1]
   p<-dim(X)[2]
+  if(is.null(weights)) {
+    weights <- rep(1.0/n,n)
+  }
   if(!is.vector(Y)) {
     stop("Y has to be a vector.")
   }
@@ -104,9 +107,6 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   }
   if(is.null(lambdas)) {
     lambdas<-rep(-1,n_lambda)
-  }
-  if(is.null(weights)) {
-    weights <- rep(1.0/n,n)
   }
 
   wts <- weights/sum(weights)
