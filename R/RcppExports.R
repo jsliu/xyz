@@ -85,8 +85,8 @@ scan_main_effects <- function(X, Y, weights, main_effects, beta_main, lambdas, a
     .Call('_xyz_scan_main_effects', PACKAGE = 'xyz', X, Y, weights, main_effects, beta_main, lambdas, alpha, r, add_max, strong)
 }
 
-scale_intr <- function(X, pair_x, pair_y) {
-    .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, pair_x, pair_y)
+scale_intr <- function(X, weights, pair_x, pair_y) {
+    .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, weights, pair_x, pair_y)
 }
 
 scan_intr_effects <- function(X, Y, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong) {
@@ -109,8 +109,8 @@ iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_ef
     .Call('_xyz_iterate', PACKAGE = 'xyz', X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, r, maxiter_inner)
 }
 
-update_intr_vars <- function(X, intr_effects, standardize, r) {
-    .Call('_xyz_update_intr_vars', PACKAGE = 'xyz', X, intr_effects, standardize, r)
+update_intr_vars <- function(X, weights, intr_effects, standardize, r) {
+    .Call('_xyz_update_intr_vars', PACKAGE = 'xyz', X, weights, intr_effects, standardize, r)
 }
 
 clean_all_effects <- function(main_effects, beta_main, intr_effects, beta_intr, r) {

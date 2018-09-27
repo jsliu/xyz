@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "r.h": "c",
-        "rinternals.h": "c"
+        "rinternals.h": "c",
+        "rdynload.h": "c"
     }
 }

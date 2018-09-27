@@ -290,15 +290,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // scale_intr
-NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y);
-RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP) {
+NumericVector scale_intr(NumericMatrix X, NumericVector weights, int pair_x, int pair_y);
+RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP weightsSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type pair_x(pair_xSEXP);
     Rcpp::traits::input_parameter< int >::type pair_y(pair_ySEXP);
-    rcpp_result_gen = Rcpp::wrap(scale_intr(X, pair_x, pair_y));
+    rcpp_result_gen = Rcpp::wrap(scale_intr(X, weights, pair_x, pair_y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -398,16 +399,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // update_intr_vars
-NumericMatrix update_intr_vars(const NumericMatrix& X, List intr_effects, bool standardize, int r);
-RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
+NumericMatrix update_intr_vars(const NumericMatrix& X, const NumericVector& weights, List intr_effects, bool standardize, int r);
+RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP weightsSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< List >::type intr_effects(intr_effectsSEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_intr_vars(X, intr_effects, standardize, r));
+    rcpp_result_gen = Rcpp::wrap(update_intr_vars(X, weights, intr_effects, standardize, r));
     return rcpp_result_gen;
 END_RCPP
 }
