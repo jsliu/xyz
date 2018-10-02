@@ -266,9 +266,9 @@ IntegerMatrix clean_pairs(IntegerMatrix pairs) {
     pairs1.reserve(n_pairs);
 
     for(int i = 0; i < n_pairs; ++i) {
-        if(pairs(0,i) <= pairs(1,i)) {
+        if(pairs(0,i) < pairs(1,i)) {
           pairs1.push_back(std::make_pair(pairs(0,i), pairs(1,i)));
-        } else {
+        } else if (pairs(0,i) > pairs(1,i)) {
           pairs1.push_back(std::make_pair(pairs(1,i), pairs(0,i)));
         }
     }
@@ -585,7 +585,7 @@ List naive_interaction_search(NumericMatrix X, NumericVector Y, NumericVector we
 
   int count = 0;
   for(int k = 0; k < p; ++k) {
-    for(int l = k; l < p; ++l) {
+    for(int l = k+1; l < p; ++l) {
       double temp = 0;
       for(int i = 0; i < n; ++i) {
           temp += Y[i]*X(i,l)*X(i,k)*weights[i];
