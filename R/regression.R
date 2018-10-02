@@ -359,10 +359,10 @@ predict.ic.xyz_regression <- function(object, newdata, ...)
 }
 
 #' @export
-plot.ic.xyz_regression <- function(object)
+plot.ic.xyz_regression <- function(object,...)
 {
   n=object$glmnet$df
-  llambda=log(object$glmnet$lambda)
+  llambda=log(object$glmnet[[5]])
   ic=object$ic.range
   ylab=names(object$ic[which(object$ic==ic[which.min(ic)])])
 
