@@ -555,7 +555,6 @@ List projected_equal_pairs(IntegerMatrix X, NumericVector Y, int number_of_runs,
         x = colsum_index(Zr,indexes);
         z = colsum_index(Xr,indexes);
 
-
         order_x = order_vector(x,false);
         order_z = order_vector(z,false);
 

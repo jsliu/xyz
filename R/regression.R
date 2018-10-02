@@ -318,7 +318,7 @@ ic.xyz_regression<-function(x,y,crit=c("bic","aic","aicc","hqc"),...)
 
   crit <- switch(crit,bic=bic,aic=aic,aicc=aicc,hqc=hqc)
 
-  selected <- best.model <- which(crit == min(crit))
+  selected <- best.model <- max(which(crit == min(crit)))
 
   ic <- c(bic=bic[selected],aic=aic[selected],aicc=aicc[selected],hqc=hqc[selected])
 
@@ -356,5 +356,18 @@ predict.ic.xyz_regression <- function(object, newdata, ...)
   Y_pred <- intercept+newdata[,main_effects]%*%beta_main+(newdata[,intr_effects[1,]]*newdata[,intr_effects[2,]])%*%beta_intr
 
   return(as.vector(Y_pred))
+}
+
+#' @export
+plot.ic.xyz_regression <- function(object)
+{
+  n=object$glmnet$df
+  llambda=log(object$glmnet$lambda)
+  ic=object$ic.range
+  ylab=names(object$ic[which(object$ic==ic[which.min(ic)])])
+
+  graphics::plot(llambda, ic, xlab = "log(Lambda)", ylab = substr(ylab, 1, 3),...)
+  graphics::abline(v = llambda[which.min(ic)], lty = 2)
+  graphics::axis(3, at = llambda, labels = n)
 }
 
