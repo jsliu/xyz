@@ -109,8 +109,8 @@ iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_ef
     .Call('_xyz_iterate', PACKAGE = 'xyz', X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, r, maxiter_inner)
 }
 
-update_intr_vars <- function(X, intr_effects, standardize, r) {
-    .Call('_xyz_update_intr_vars', PACKAGE = 'xyz', X, intr_effects, standardize, r)
+update_intr_vars <- function(X, intr_effects, r) {
+    .Call('_xyz_update_intr_vars', PACKAGE = 'xyz', X, intr_effects, r)
 }
 
 clean_all_effects <- function(main_effects, beta_main, intr_effects, beta_intr, r) {
@@ -121,7 +121,7 @@ warm_start <- function(main_effects, beta_main, intr_effects, beta_intr, r) {
     invisible(.Call('_xyz_warm_start', PACKAGE = 'xyz', main_effects, beta_main, intr_effects, beta_intr, r))
 }
 
-gaussiglmnet <- function(X, Y, weights, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs) {
-    .Call('_xyz_gaussiglmnet', PACKAGE = 'xyz', X, Y, weights, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs)
+gaussiglmnet <- function(X, Y, weights, lambdas, alpha, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs) {
+    .Call('_xyz_gaussiglmnet', PACKAGE = 'xyz', X, Y, weights, lambdas, alpha, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs)
 }
 

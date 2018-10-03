@@ -1033,7 +1033,7 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
 
 /* build interaction variables*/
 //[[Rcpp::export]]
-NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, bool standardize, int r) {
+NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, int r) {
     int n = X.nrow();
     IntegerMatrix temp_intr_effects = intr_effects[r];
     NumericMatrix intr_vars(n,temp_intr_effects.ncol());
@@ -1049,17 +1049,17 @@ NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, bool s
             intr[i]=X(i,pair_x)*X(i,pair_y);
             mean += intr[i];
         }
-        if(standardize) {
-          mean = mean/n;
-          for (int i = 0; i < n; ++i) {
-              intr[i]=intr[i]-mean;
-              var += intr[i]*intr[i];
-          }
-          if (std::abs(var) > 0 && n > 1) {
-              intr = intr/std::sqrt(var/(n-1));
-              intr_vars(_,l) = intr;
-          }
+        
+        mean = mean/n;
+        for (int i = 0; i < n; ++i) {
+            intr[i]=intr[i]-mean;
+            var += intr[i]*intr[i];
         }
+        if (std::abs(var) > 0 && n > 1) {
+            intr = intr/std::sqrt(var/(n-1));
+            intr_vars(_,l) = intr;
+        }
+    
     }
     return intr_vars;
 }
@@ -1143,7 +1143,7 @@ void warm_start(List main_effects, List beta_main,
 }
 
 // [[Rcpp::export]]
-List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
+List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
     
     int n = X.nrow(); int n_lambda = lambdas.size();
 
@@ -1179,7 +1179,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,true);
 
-            intr_vars = update_intr_vars(X,intr_effects,standardize,r);
+            intr_vars = update_intr_vars(X,intr_effects,r);
 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 
@@ -1192,7 +1192,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
         clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
 
-        intr_vars = update_intr_vars(X,intr_effects,standardize,r);
+        intr_vars = update_intr_vars(X,intr_effects,r);
 
         iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 

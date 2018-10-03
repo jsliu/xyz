@@ -113,7 +113,7 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   
   max_main_effects<-100
   max_interaction_effects<-20
-  result<-gaussiglmnet(X, Y, wts, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, 2, L)
+  result<-gaussiglmnet(X, Y, wts, lambdas, alpha, max_main_effects, max_interaction_effects, 2, L)
   L<-length(result[[1]])
   for(i in 1:L) {
     result[[1]][[i]]<-result[[1]][[i]]+1
