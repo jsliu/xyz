@@ -29,7 +29,7 @@ extern SEXP _xyz_prod_matrix_vector(SEXP, SEXP);
 extern SEXP _xyz_projected_equal_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_sample_int_replace(SEXP, SEXP);
 extern SEXP _xyz_sample_uniform(SEXP, SEXP);
-extern SEXP _xyz_scale_intr(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_scale_intr(SEXP, SEXP, SEXP);
 extern SEXP _xyz_scan_intr_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_scan_main_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_soft_threshold(SEXP, SEXP, SEXP, SEXP);
@@ -37,7 +37,7 @@ extern SEXP _xyz_sort_using_order_intmat(SEXP, SEXP);
 extern SEXP _xyz_sort_using_order_numvec(SEXP, SEXP);
 extern SEXP _xyz_translate_to_binary(SEXP, SEXP);
 extern SEXP _xyz_update_intr_final(SEXP, SEXP);
-extern SEXP _xyz_update_intr_vars(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_update_intr_vars(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_warm_start(SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
@@ -62,7 +62,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_xyz_projected_equal_pairs",                     (DL_FUNC) &_xyz_projected_equal_pairs,                      5},
     {"_xyz_sample_int_replace",                        (DL_FUNC) &_xyz_sample_int_replace,                         2},
     {"_xyz_sample_uniform",                            (DL_FUNC) &_xyz_sample_uniform,                             2},
-    {"_xyz_scale_intr",                                (DL_FUNC) &_xyz_scale_intr,                                 4},
+    {"_xyz_scale_intr",                                (DL_FUNC) &_xyz_scale_intr,                                 3},
     {"_xyz_scan_intr_effects",                         (DL_FUNC) &_xyz_scan_intr_effects,                         12},
     {"_xyz_scan_main_effects",                         (DL_FUNC) &_xyz_scan_main_effects,                         10},
     {"_xyz_soft_threshold",                            (DL_FUNC) &_xyz_soft_threshold,                             4},
@@ -70,7 +70,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_xyz_sort_using_order_numvec",                   (DL_FUNC) &_xyz_sort_using_order_numvec,                    2},
     {"_xyz_translate_to_binary",                       (DL_FUNC) &_xyz_translate_to_binary,                        2},
     {"_xyz_update_intr_final",                         (DL_FUNC) &_xyz_update_intr_final,                          2},
-    {"_xyz_update_intr_vars",                          (DL_FUNC) &_xyz_update_intr_vars,                           5},
+    {"_xyz_update_intr_vars",                          (DL_FUNC) &_xyz_update_intr_vars,                           4},
     {"_xyz_warm_start",                                (DL_FUNC) &_xyz_warm_start,                                 5},
     {NULL, NULL, 0}
 };
