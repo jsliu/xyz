@@ -751,7 +751,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
 }
 
 //[[Rcpp::export]]
-NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y) {
+NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y, bool standardize) {
     int n = X.nrow();
     NumericVector intr(n);
     double mean = 0.0;
@@ -760,21 +760,24 @@ NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y) {
         intr[i]=X(i,pair_x)*X(i,pair_y);
         mean += intr[i];
     }
+
+    if (standardize) {
     mean = mean/n;
-    for (int i = 0; i < n; ++i) {
-        intr[i]=intr[i]-mean;
-        var += intr[i]*intr[i];
-    }
-    if (std::abs(var) > 0 && n > 1) {
-            intr = intr/std::sqrt(var/(n-1));
+        for (int i = 0; i < n; ++i) {
+            intr[i]=intr[i]-mean;
+            var += intr[i]*intr[i];
+        }
+        if (std::abs(var) > 0 && n > 1) {
+                intr = intr/std::sqrt(var/(n-1));
+        }
     }
     return intr;
 }
 
 //[[Rcpp::export]]
 bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const IntegerMatrix &X_bin, const NumericVector &weights,
-                       List intr_effects, List beta_intr, NumericMatrix &intr_vars,
-                       const NumericVector &lambdas, double alpha, int r, int projections, bool strong) {
+                       List intr_effects, List beta_intr, NumericMatrix &intr_vars, const NumericVector &lambdas, 
+                       double alpha, int r, int projections, bool standardize, bool strong) {
 
     int n = X.nrow();
 
@@ -789,7 +792,7 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const Int
     int number_considered = std::min(20,pairs_is.ncol());
 
     NumericVector covariates(number_considered);
-    NumericMatrix intr_vars_new(n,number_considered);
+    //NumericMatrix intr_vars_new(n,number_considered);
 
     IntegerMatrix temp_intr_effects = intr_effects[r];
     NumericVector temp_beta_intr = beta_intr[r];
@@ -806,10 +809,10 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const Int
 
     for (int l = 0; l < number_considered; ++l) {
         sum1 = 0.0;
-        temp_itr = scale_intr(X,pairs_is(0,l),pairs_is(1,l));
+        temp_itr = scale_intr(X,pairs_is(0,l),pairs_is(1,l), standardize);
         for (int i = 0; i < n; ++i) {
             sum1 += temp_itr[i]*Y[i]*weights[i];
-            intr_vars_new(i,l) = temp_itr[i];
+            //intr_vars_new(i,l) = temp_itr[i];
         }
 
         covariates[l] = sum1;
@@ -1033,7 +1036,7 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
 
 /* build interaction variables*/
 //[[Rcpp::export]]
-NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, int r) {
+NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, bool standardize, int r) {
     int n = X.nrow();
     IntegerMatrix temp_intr_effects = intr_effects[r];
     NumericMatrix intr_vars(n,temp_intr_effects.ncol());
@@ -1050,14 +1053,16 @@ NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, int r)
             mean += intr[i];
         }
         
-        mean = mean/n;
-        for (int i = 0; i < n; ++i) {
-            intr[i]=intr[i]-mean;
-            var += intr[i]*intr[i];
-        }
-        if (std::abs(var) > 0 && n > 1) {
-            intr = intr/std::sqrt(var/(n-1));
-            intr_vars(_,l) = intr;
+        if (standardize) {
+            mean = mean/n;
+            for (int i = 0; i < n; ++i) {
+                intr[i]=intr[i]-mean;
+                var += intr[i]*intr[i];
+            }
+            if (std::abs(var) > 0 && n > 1) {
+                intr = intr/std::sqrt(var/(n-1));
+                intr_vars(_,l) = intr;
+            }
         }
     
     }
@@ -1143,7 +1148,7 @@ void warm_start(List main_effects, List beta_main,
 }
 
 // [[Rcpp::export]]
-List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
+List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
     
     int n = X.nrow(); int n_lambda = lambdas.size();
 
@@ -1177,9 +1182,9 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r);
 
-            changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,true);
+            changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,standardize,true);
 
-            intr_vars = update_intr_vars(X,intr_effects,r);
+            intr_vars = update_intr_vars(X,intr_effects,standardize,r);
 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 
@@ -1192,7 +1197,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
         clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
 
-        intr_vars = update_intr_vars(X,intr_effects,r);
+        intr_vars = update_intr_vars(X,intr_effects,standardize,r);
 
         iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 

@@ -290,21 +290,22 @@ BEGIN_RCPP
 END_RCPP
 }
 // scale_intr
-NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y);
-RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP) {
+NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y, bool standardize);
+RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP, SEXP standardizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type pair_x(pair_xSEXP);
     Rcpp::traits::input_parameter< int >::type pair_y(pair_ySEXP);
-    rcpp_result_gen = Rcpp::wrap(scale_intr(X, pair_x, pair_y));
+    Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(scale_intr(X, pair_x, pair_y, standardize));
     return rcpp_result_gen;
 END_RCPP
 }
 // scan_intr_effects
-bool scan_intr_effects(const NumericMatrix& X, const NumericVector& Y, const IntegerMatrix& X_bin, const NumericVector& weights, List intr_effects, List beta_intr, NumericMatrix& intr_vars, const NumericVector& lambdas, double alpha, int r, int projections, bool strong);
-RcppExport SEXP _xyz_scan_intr_effects(SEXP XSEXP, SEXP YSEXP, SEXP X_binSEXP, SEXP weightsSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP projectionsSEXP, SEXP strongSEXP) {
+bool scan_intr_effects(const NumericMatrix& X, const NumericVector& Y, const IntegerMatrix& X_bin, const NumericVector& weights, List intr_effects, List beta_intr, NumericMatrix& intr_vars, const NumericVector& lambdas, double alpha, int r, int projections, bool standardize, bool strong);
+RcppExport SEXP _xyz_scan_intr_effects(SEXP XSEXP, SEXP YSEXP, SEXP X_binSEXP, SEXP weightsSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP rSEXP, SEXP projectionsSEXP, SEXP standardizeSEXP, SEXP strongSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -319,8 +320,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
     Rcpp::traits::input_parameter< int >::type projections(projectionsSEXP);
+    Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
     Rcpp::traits::input_parameter< bool >::type strong(strongSEXP);
-    rcpp_result_gen = Rcpp::wrap(scan_intr_effects(X, Y, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, strong));
+    rcpp_result_gen = Rcpp::wrap(scan_intr_effects(X, Y, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, standardize, strong));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -398,15 +400,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // update_intr_vars
-NumericMatrix update_intr_vars(const NumericMatrix& X, List intr_effects, int r);
-RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP intr_effectsSEXP, SEXP rSEXP) {
+NumericMatrix update_intr_vars(const NumericMatrix& X, List intr_effects, bool standardize, int r);
+RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< List >::type intr_effects(intr_effectsSEXP);
+    Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_intr_vars(X, intr_effects, r));
+    rcpp_result_gen = Rcpp::wrap(update_intr_vars(X, intr_effects, standardize, r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -439,8 +442,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // gaussiglmnet
-List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs);
-RcppExport SEXP _xyz_gaussiglmnet(SEXP XSEXP, SEXP YSEXP, SEXP weightsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP max_main_effectsSEXP, SEXP max_interaction_effectsSEXP, SEXP max_outerSEXP, SEXP number_of_nnis_runsSEXP) {
+List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs);
+RcppExport SEXP _xyz_gaussiglmnet(SEXP XSEXP, SEXP YSEXP, SEXP weightsSEXP, SEXP lambdasSEXP, SEXP alphaSEXP, SEXP standardizeSEXP, SEXP max_main_effectsSEXP, SEXP max_interaction_effectsSEXP, SEXP max_outerSEXP, SEXP number_of_nnis_runsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -449,11 +452,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type lambdas(lambdasSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
     Rcpp::traits::input_parameter< int >::type max_main_effects(max_main_effectsSEXP);
     Rcpp::traits::input_parameter< int >::type max_interaction_effects(max_interaction_effectsSEXP);
     Rcpp::traits::input_parameter< int >::type max_outer(max_outerSEXP);
     Rcpp::traits::input_parameter< int >::type number_of_nnis_runs(number_of_nnis_runsSEXP);
-    rcpp_result_gen = Rcpp::wrap(gaussiglmnet(X, Y, weights, lambdas, alpha, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs));
+    rcpp_result_gen = Rcpp::wrap(gaussiglmnet(X, Y, weights, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, max_outer, number_of_nnis_runs));
     return rcpp_result_gen;
 END_RCPP
 }
