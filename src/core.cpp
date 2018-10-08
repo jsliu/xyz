@@ -692,7 +692,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
     for (int l = 0; l < temp_main_effects.size(); ++l) {
         already_contained[temp_main_effects[l]] = true;
     }
-
+    
     NumericVector covs = absolute_covariates(X,Y,weights);
     IntegerVector order_covs = order_vector(covs,true);
 
@@ -762,7 +762,7 @@ NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y, bool standardi
     }
 
     if (standardize) {
-    mean = mean/n;
+        mean = mean/n;
         for (int i = 0; i < n; ++i) {
             intr[i]=intr[i]-mean;
             var += intr[i]*intr[i];
@@ -775,7 +775,7 @@ NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y, bool standardi
 }
 
 //[[Rcpp::export]]
-bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const IntegerMatrix &X_bin, const NumericVector &weights,
+bool scan_intr_effects(const NumericMatrix &X, const NumericVector &residuals, const IntegerMatrix &X_bin, const NumericVector &weights,
                        List intr_effects, List beta_intr, NumericMatrix &intr_vars, const NumericVector &lambdas, 
                        double alpha, int r, int projections, bool standardize, bool strong) {
 
@@ -786,7 +786,7 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const Int
 
     List result_interaction_search(2);
 
-    result_interaction_search = interaction_search_low_level(X_bin,X,Y,weights,projections,20);
+    result_interaction_search = interaction_search_low_level(X_bin,X,residuals,weights,projections,20);
     IntegerMatrix pairs_is = result_interaction_search(0);
 
     int number_considered = std::min(20,pairs_is.ncol());
@@ -811,7 +811,7 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &Y, const Int
         sum1 = 0.0;
         temp_itr = scale_intr(X,pairs_is(0,l),pairs_is(1,l), standardize);
         for (int i = 0; i < n; ++i) {
-            sum1 += temp_itr[i]*Y[i]*weights[i];
+            sum1 += temp_itr[i]*residuals[i]*weights[i];
             //intr_vars_new(i,l) = temp_itr[i];
         }
 

@@ -89,8 +89,8 @@ scale_intr <- function(X, pair_x, pair_y, standardize) {
     .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, pair_x, pair_y, standardize)
 }
 
-scan_intr_effects <- function(X, Y, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, standardize, strong) {
-    .Call('_xyz_scan_intr_effects', PACKAGE = 'xyz', X, Y, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, standardize, strong)
+scan_intr_effects <- function(X, residuals, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, standardize, strong) {
+    .Call('_xyz_scan_intr_effects', PACKAGE = 'xyz', X, residuals, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, standardize, strong)
 }
 
 update_intr_final <- function(intr_effects, beta_intr) {

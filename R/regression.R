@@ -99,9 +99,11 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   if(n < 10) {
     stop(paste("You have ",n," samples. The number of samples should at least be 10.",sep=""))
   }
+
   if(standardize) {
     X<-scale(X)
   }
+  
   if(standardize_response) {
     Y<-scale(Y)
   }
@@ -119,6 +121,7 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
     result[[1]][[i]]<-result[[1]][[i]]+1
     result[[3]][[i]]<-result[[3]][[i]]+1
   }
+
   result<-standardize_result(result,X,Y,standardize,standardize_response)
   class(result)<-"xyz_regression_result"
   return(result)
