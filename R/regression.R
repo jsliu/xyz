@@ -145,7 +145,7 @@ summary.xyz_regression_result<-function(object,...) {
 }
 
 #' @export
-print.xyz_regression_result<-function(x,...,whichlambda=-1) {
+print.xyz_regression_result<-function(x,whichlambda=-1,...) {
   lambda_sequence<-round(x[[5]],digits=5)
   cat("Lambda sequence:\n")
   cat(paste("lambda",1:length(lambda_sequence),"=",lambda_sequence,"\n",sep=""))
