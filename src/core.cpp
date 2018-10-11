@@ -1184,7 +1184,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
             residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r);
             if (r==12){
-                double sum = 0.0;
+                //double sum = 0.0;
                 for (int i =0;i < n;++i)
                     Rcout << iter << " " << residuals[i];
                 //Rcout << r << " " << iter << " " << sum << "\n";
