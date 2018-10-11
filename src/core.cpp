@@ -519,8 +519,8 @@ List projected_equal_pairs(IntegerMatrix X, NumericVector Y, int number_of_runs,
 
     double s2 = mean(frequencies);
     //double s2 = 0.5;
-    if(s2 < 0.9) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually high");}
-    if(s2 > 0.1) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually low");}
+    if(s2 > 0.9) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually high");}
+    if(s2 < 0.1) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually low");}
 
     float pp = p;
     int size_of_subsample = round_to_int(-log(pp)/log(s2));
@@ -635,10 +635,6 @@ List interaction_search(NumericMatrix X, NumericVector Y, NumericVector weights,
     }
     int max_number_of_collisions = 2*p;
     List pairs = projected_equal_pairs(X_binary, Y,number_of_runs, max_number_of_collisions, negative);
-    /**if (pairs.size() == 0) {
-        List empty;
-        return empty;
-    }**/
     result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs);    
   }
   return result;
@@ -653,10 +649,6 @@ List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, Numeri
   } else {
     int max_number_of_collisions = 2*p;
     List pairs = projected_equal_pairs(X_binary,Y,number_of_runs, max_number_of_collisions, true);
-    /**if (pairs.size() == 0) {
-        List empty;
-        return empty;
-    }**/
     result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs);
   }
   return result;
@@ -1191,7 +1183,10 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 
             residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r);
-
+            double sum = 0.0;
+            for (int i =0;i < n;++i)
+                sum+=residuals[i];
+            Rcout << r << " " << iter << " " << sum << "\n";    
             changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,standardize,true);
 
             intr_vars = update_intr_vars(X,intr_effects,standardize,r);
