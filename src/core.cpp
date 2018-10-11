@@ -519,8 +519,8 @@ List projected_equal_pairs(IntegerMatrix X, NumericVector Y, int number_of_runs,
 
     double s2 = mean(frequencies);
     //double s2 = 0.5;
-    if(s2 > 0.9) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually high");}
-    if(s2 < 0.1) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually low");}
+    if(s2 > 0.9) {Rcout << "s2=" << X(0,1) <<" "; stop("background interaction strength seems to be unusually high");}
+    if(s2 < 0.1) {Rcout << "s2=" << X(0,1) <<" "; stop("background interaction strength seems to be unusually low");}
     /**if (s2 < 0.1 || s2 > 0.9) {
         List empty;
         return empty;
