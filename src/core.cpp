@@ -519,22 +519,13 @@ List projected_equal_pairs(IntegerMatrix X, NumericVector Y, int number_of_runs,
 
     double s2 = mean(frequencies);
     //double s2 = 0.5;
-    //if(s2 > 0.9) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually high");}
-    //if(s2 > 0.1) 
-    Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually low");
-    /**if (s2 < 0.1 || s2 > 0.9) {
-        List empty;
-        return empty;
-    }**/
+    if(s2 > 0.9) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually high");}
+    if(s2 < 0.1) {Rcout << "s2=" << s2 <<" "; stop("background interaction strength seems to be unusually low");}
 
     float pp = p;
     int size_of_subsample = round_to_int(-log(pp)/log(s2));
     if(size_of_subsample < 1) stop("calculated sub sample size is below 1");
     if(size_of_subsample > n) stop("calculated sub sample size is above n");
-    /**if (size_of_subsample < 1 || size_of_subsample > n) {
-        List empty;
-        return empty;
-    }**/
 
     NumericVector r = runif(n);
     NumericVector ry(n);
