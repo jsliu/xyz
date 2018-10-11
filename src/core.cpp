@@ -61,8 +61,6 @@ void sort_using_order_intmat(IntegerMatrix x, const IntegerVector x_o) {
     for(int i = 0; i < x.ncol(); ++i) { x(0,i) = temp(0,i); x(1,i) = temp(1,i); }
 }
 
-
-
 //[[Rcpp::export]]
 IntegerVector sample_uniform(int range, int n) {
     if(range < 1)  stop("range is zero or negative");
