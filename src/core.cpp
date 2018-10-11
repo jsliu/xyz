@@ -1183,10 +1183,12 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,r,maxiter_inner);
 
             residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r);
-            double sum = 0.0;
-            for (int i =0;i < n;++i)
-                sum+=residuals[i];
-            Rcout << r << " " << iter << " " << sum << "\n";    
+            if (r==13){
+                double sum = 0.0;
+                for (int i =0;i < n;++i)
+                    Rcout << iter << " " << residuals[i];
+                //Rcout << r << " " << iter << " " << sum << "\n";
+            }    
             changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,standardize,true);
 
             intr_vars = update_intr_vars(X,intr_effects,standardize,r);
