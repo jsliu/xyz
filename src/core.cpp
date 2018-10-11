@@ -661,10 +661,10 @@ List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, Numeri
   } else {
     int max_number_of_collisions = 2*p;
     List pairs = projected_equal_pairs(X_binary,Y,number_of_runs, max_number_of_collisions, true);
-    if (pairs.size() == 0) {
+    /**if (pairs.size() == 0) {
         List empty;
         return empty;
-    }
+    }**/
     result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs);
   }
   return result;
