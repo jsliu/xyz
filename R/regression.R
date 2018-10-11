@@ -380,3 +380,10 @@ convert_to_binary <- function(X,N)
   X.bin <- translate_to_binary(X,N)
   return(X.bin)
 }
+
+#' @export
+estimate_interaction_strength <- function(X, Y, n)
+{
+  frequency <- estimate_background_interaction_frequency(X,Y, n)
+  return(frequency)
+}
