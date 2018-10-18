@@ -10,8 +10,8 @@
 /* .Call calls */
 extern SEXP _xyz_absolute_covariates(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_absolute_covariates_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_calculate_residuals(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_calculate_xbeta(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_calculate_residuals(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_calculate_xbeta(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_clean_all_effects(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_clean_pairs(SEXP);
 extern SEXP _xyz_colsum_index(SEXP, SEXP);
@@ -22,7 +22,7 @@ extern SEXP _xyz_find_strongest_pairs(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_gaussiglmnet(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_interaction_search(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_interaction_search_low_level(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_iterate(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_iterate(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_naive_interaction_search(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_order_vector(SEXP, SEXP);
 extern SEXP _xyz_prod_matrix_vector(SEXP, SEXP);
@@ -44,8 +44,8 @@ extern SEXP _xyz_warm_start(SEXP, SEXP, SEXP, SEXP, SEXP);
 static const R_CallMethodDef CallEntries[] = {
     {"_xyz_absolute_covariates",                       (DL_FUNC) &_xyz_absolute_covariates,                        4},
     {"_xyz_absolute_covariates_pairs",                 (DL_FUNC) &_xyz_absolute_covariates_pairs,                  5},
-    {"_xyz_calculate_residuals",                       (DL_FUNC) &_xyz_calculate_residuals,                        9},
-    {"_xyz_calculate_xbeta",                           (DL_FUNC) &_xyz_calculate_xbeta,                            9},
+    {"_xyz_calculate_residuals",                       (DL_FUNC) &_xyz_calculate_residuals,                       10},
+    {"_xyz_calculate_xbeta",                           (DL_FUNC) &_xyz_calculate_xbeta,                           10},
     {"_xyz_clean_all_effects",                         (DL_FUNC) &_xyz_clean_all_effects,                          5},
     {"_xyz_clean_pairs",                               (DL_FUNC) &_xyz_clean_pairs,                                1},
     {"_xyz_colsum_index",                              (DL_FUNC) &_xyz_colsum_index,                               2},
@@ -56,7 +56,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_xyz_gaussiglmnet",                              (DL_FUNC) &_xyz_gaussiglmnet,                              10},
     {"_xyz_interaction_search",                        (DL_FUNC) &_xyz_interaction_search,                         8},
     {"_xyz_interaction_search_low_level",              (DL_FUNC) &_xyz_interaction_search_low_level,               7},
-    {"_xyz_iterate",                                   (DL_FUNC) &_xyz_iterate,                                   14},
+    {"_xyz_iterate",                                   (DL_FUNC) &_xyz_iterate,                                   15},
     {"_xyz_naive_interaction_search",                  (DL_FUNC) &_xyz_naive_interaction_search,                   5},
     {"_xyz_order_vector",                              (DL_FUNC) &_xyz_order_vector,                               2},
     {"_xyz_prod_matrix_vector",                        (DL_FUNC) &_xyz_prod_matrix_vector,                         2},
