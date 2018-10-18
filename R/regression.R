@@ -271,11 +271,12 @@ plot.xyz_regression_result<-function(x,xvar=c("norm","lambda")) {
 
   xvar <- match.arg(xvar)
   switch(xvar,
-        "norm"={xaxis=beta_norm; xlab="L1 Norm"},
-        "lambda"={xaxis=log(lambdas); xlab="Log Lambda"}
+        "norm"={xaxis=c(0,beta_norm); xlab="L1 Norm"},
+        "lambda"={xaxis=c(0,log(lambdas)); xlab="Log Lambda"}
         )
+  yaxis <- rbind(0,t(all_paths))
   colors_plot<-c(rep("blue",nr_main),rep("red",nr_intr))
-  matplot(xaxis,t(all_paths),type="l",col=colors_plot,lty=1,lwd=2,ylab="coefficients",xlab=xlab)
+  matplot(xaxis,yaxis,type="l",col=colors_plot,lty=1,lwd=2,ylab="coefficients",xlab=xlab)
   legend("topleft",legend=c("main effects","interaction effects"),lty=c(1,1),col=c("blue","red"))
 }
 

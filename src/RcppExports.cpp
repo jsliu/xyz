@@ -88,29 +88,31 @@ BEGIN_RCPP
 END_RCPP
 }
 // scale_main
-NumericVector scale_main(NumericMatrix X, int col, bool standardize);
-RcppExport SEXP _xyz_scale_main(SEXP XSEXP, SEXP colSEXP, SEXP standardizeSEXP) {
+NumericVector scale_main(NumericMatrix X, NumericVector weights, int col, bool standardize);
+RcppExport SEXP _xyz_scale_main(SEXP XSEXP, SEXP weightsSEXP, SEXP colSEXP, SEXP standardizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type col(colSEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(scale_main(X, col, standardize));
+    rcpp_result_gen = Rcpp::wrap(scale_main(X, weights, col, standardize));
     return rcpp_result_gen;
 END_RCPP
 }
 // scale_intr
-NumericVector scale_intr(NumericMatrix X, int pair_x, int pair_y, bool standardize);
-RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP, SEXP standardizeSEXP) {
+NumericVector scale_intr(NumericMatrix X, NumericVector weights, int pair_x, int pair_y, bool standardize);
+RcppExport SEXP _xyz_scale_intr(SEXP XSEXP, SEXP weightsSEXP, SEXP pair_xSEXP, SEXP pair_ySEXP, SEXP standardizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type pair_x(pair_xSEXP);
     Rcpp::traits::input_parameter< int >::type pair_y(pair_ySEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(scale_intr(X, pair_x, pair_y, standardize));
+    rcpp_result_gen = Rcpp::wrap(scale_intr(X, weights, pair_x, pair_y, standardize));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -358,13 +360,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // calculate_xbeta
-NumericVector calculate_xbeta(const NumericMatrix& X, const NumericVector& Y, const NumericVector& intercept, const List main_effects, const List beta_main, const List intr_effects, const List beta_intr, const NumericMatrix& intr_vars, int r, bool standardize);
-RcppExport SEXP _xyz_calculate_xbeta(SEXP XSEXP, SEXP YSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP, SEXP standardizeSEXP) {
+NumericVector calculate_xbeta(const NumericMatrix& X, const NumericVector& Y, const NumericVector& weights, const NumericVector& intercept, const List main_effects, const List beta_main, const List intr_effects, const List beta_intr, const NumericMatrix& intr_vars, int r, bool standardize);
+RcppExport SEXP _xyz_calculate_xbeta(SEXP XSEXP, SEXP YSEXP, SEXP weightsSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP, SEXP standardizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type intercept(interceptSEXP);
     Rcpp::traits::input_parameter< const List >::type main_effects(main_effectsSEXP);
     Rcpp::traits::input_parameter< const List >::type beta_main(beta_mainSEXP);
@@ -373,18 +376,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type intr_vars(intr_varsSEXP);
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_xbeta(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize));
+    rcpp_result_gen = Rcpp::wrap(calculate_xbeta(X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize));
     return rcpp_result_gen;
 END_RCPP
 }
 // calculate_residuals
-NumericVector calculate_residuals(const NumericMatrix& X, const NumericVector& Y, const NumericVector& intercept, const List main_effects, const List beta_main, const List intr_effects, const List beta_intr, const NumericMatrix& intr_vars, int r, bool standardize);
-RcppExport SEXP _xyz_calculate_residuals(SEXP XSEXP, SEXP YSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP, SEXP standardizeSEXP) {
+NumericVector calculate_residuals(const NumericMatrix& X, const NumericVector& Y, const NumericVector& weights, const NumericVector& intercept, const List main_effects, const List beta_main, const List intr_effects, const List beta_intr, const NumericMatrix& intr_vars, int r, bool standardize);
+RcppExport SEXP _xyz_calculate_residuals(SEXP XSEXP, SEXP YSEXP, SEXP weightsSEXP, SEXP interceptSEXP, SEXP main_effectsSEXP, SEXP beta_mainSEXP, SEXP intr_effectsSEXP, SEXP beta_intrSEXP, SEXP intr_varsSEXP, SEXP rSEXP, SEXP standardizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type intercept(interceptSEXP);
     Rcpp::traits::input_parameter< const List >::type main_effects(main_effectsSEXP);
     Rcpp::traits::input_parameter< const List >::type beta_main(beta_mainSEXP);
@@ -393,7 +397,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type intr_vars(intr_varsSEXP);
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_residuals(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize));
+    rcpp_result_gen = Rcpp::wrap(calculate_residuals(X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize));
     return rcpp_result_gen;
 END_RCPP
 }

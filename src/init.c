@@ -10,8 +10,8 @@
 /* .Call calls */
 extern SEXP _xyz_absolute_covariates(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_absolute_covariates_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_calculate_residuals(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_calculate_xbeta(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_calculate_residuals(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_calculate_xbeta(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_clean_all_effects(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_clean_pairs(SEXP);
 extern SEXP _xyz_colsum_index(SEXP, SEXP);
@@ -29,8 +29,8 @@ extern SEXP _xyz_prod_matrix_vector(SEXP, SEXP);
 extern SEXP _xyz_projected_equal_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_sample_int_replace(SEXP, SEXP);
 extern SEXP _xyz_sample_uniform(SEXP, SEXP);
-extern SEXP _xyz_scale_intr(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_scale_main(SEXP, SEXP, SEXP);
+extern SEXP _xyz_scale_intr(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_scale_main(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_scan_intr_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_scan_main_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_soft_threshold(SEXP, SEXP, SEXP, SEXP);
@@ -44,8 +44,8 @@ extern SEXP _xyz_warm_start(SEXP, SEXP, SEXP, SEXP, SEXP);
 static const R_CallMethodDef CallEntries[] = {
     {"_xyz_absolute_covariates",                       (DL_FUNC) &_xyz_absolute_covariates,                        4},
     {"_xyz_absolute_covariates_pairs",                 (DL_FUNC) &_xyz_absolute_covariates_pairs,                  5},
-    {"_xyz_calculate_residuals",                       (DL_FUNC) &_xyz_calculate_residuals,                       10},
-    {"_xyz_calculate_xbeta",                           (DL_FUNC) &_xyz_calculate_xbeta,                           10},
+    {"_xyz_calculate_residuals",                       (DL_FUNC) &_xyz_calculate_residuals,                       11},
+    {"_xyz_calculate_xbeta",                           (DL_FUNC) &_xyz_calculate_xbeta,                           11},
     {"_xyz_clean_all_effects",                         (DL_FUNC) &_xyz_clean_all_effects,                          5},
     {"_xyz_clean_pairs",                               (DL_FUNC) &_xyz_clean_pairs,                                1},
     {"_xyz_colsum_index",                              (DL_FUNC) &_xyz_colsum_index,                               2},
@@ -63,8 +63,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_xyz_projected_equal_pairs",                     (DL_FUNC) &_xyz_projected_equal_pairs,                      5},
     {"_xyz_sample_int_replace",                        (DL_FUNC) &_xyz_sample_int_replace,                         2},
     {"_xyz_sample_uniform",                            (DL_FUNC) &_xyz_sample_uniform,                             2},
-    {"_xyz_scale_intr",                                (DL_FUNC) &_xyz_scale_intr,                                 4},
-    {"_xyz_scale_main",                                (DL_FUNC) &_xyz_scale_main,                                 3},
+    {"_xyz_scale_intr",                                (DL_FUNC) &_xyz_scale_intr,                                 5},
+    {"_xyz_scale_main",                                (DL_FUNC) &_xyz_scale_main,                                 4},
     {"_xyz_scan_intr_effects",                         (DL_FUNC) &_xyz_scan_intr_effects,                         13},
     {"_xyz_scan_main_effects",                         (DL_FUNC) &_xyz_scan_main_effects,                         11},
     {"_xyz_soft_threshold",                            (DL_FUNC) &_xyz_soft_threshold,                             4},

@@ -29,12 +29,12 @@ colsum_index <- function(X, indexes) {
     .Call('_xyz_colsum_index', PACKAGE = 'xyz', X, indexes)
 }
 
-scale_main <- function(X, col, standardize) {
-    .Call('_xyz_scale_main', PACKAGE = 'xyz', X, col, standardize)
+scale_main <- function(X, weights, col, standardize) {
+    .Call('_xyz_scale_main', PACKAGE = 'xyz', X, weights, col, standardize)
 }
 
-scale_intr <- function(X, pair_x, pair_y, standardize) {
-    .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, pair_x, pair_y, standardize)
+scale_intr <- function(X, weights, pair_x, pair_y, standardize) {
+    .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, weights, pair_x, pair_y, standardize)
 }
 
 absolute_covariates <- function(X, Y, weights, standardize) {
@@ -101,12 +101,12 @@ update_intr_final <- function(intr_effects, beta_intr) {
     invisible(.Call('_xyz_update_intr_final', PACKAGE = 'xyz', intr_effects, beta_intr))
 }
 
-calculate_xbeta <- function(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
-    .Call('_xyz_calculate_xbeta', PACKAGE = 'xyz', X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
+calculate_xbeta <- function(X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
+    .Call('_xyz_calculate_xbeta', PACKAGE = 'xyz', X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
 }
 
-calculate_residuals <- function(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
-    .Call('_xyz_calculate_residuals', PACKAGE = 'xyz', X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
+calculate_residuals <- function(X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
+    .Call('_xyz_calculate_residuals', PACKAGE = 'xyz', X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
 }
 
 iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, standardize, r, maxiter_inner) {
