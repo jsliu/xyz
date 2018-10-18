@@ -29,12 +29,20 @@ colsum_index <- function(X, indexes) {
     .Call('_xyz_colsum_index', PACKAGE = 'xyz', X, indexes)
 }
 
-absolute_covariates <- function(X, Y, weights) {
-    .Call('_xyz_absolute_covariates', PACKAGE = 'xyz', X, Y, weights)
+scale_main <- function(X, col, standardize) {
+    .Call('_xyz_scale_main', PACKAGE = 'xyz', X, col, standardize)
 }
 
-absolute_covariates_pairs <- function(pairs, X, Y, weights) {
-    .Call('_xyz_absolute_covariates_pairs', PACKAGE = 'xyz', pairs, X, Y, weights)
+scale_intr <- function(X, pair_x, pair_y, standardize) {
+    .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, pair_x, pair_y, standardize)
+}
+
+absolute_covariates <- function(X, Y, weights, standardize) {
+    .Call('_xyz_absolute_covariates', PACKAGE = 'xyz', X, Y, weights, standardize)
+}
+
+absolute_covariates_pairs <- function(pairs, X, Y, weights, standardize) {
+    .Call('_xyz_absolute_covariates_pairs', PACKAGE = 'xyz', pairs, X, Y, weights, standardize)
 }
 
 clean_pairs <- function(pairs) {
@@ -49,8 +57,8 @@ estimate_background_interaction_frequency <- function(X, Y, number_of_samples) {
     .Call('_xyz_estimate_background_interaction_frequency', PACKAGE = 'xyz', X, Y, number_of_samples)
 }
 
-find_strongest_pairs <- function(pairs, X, Y, weights, max_number_of_pairs) {
-    .Call('_xyz_find_strongest_pairs', PACKAGE = 'xyz', pairs, X, Y, weights, max_number_of_pairs)
+find_strongest_pairs <- function(pairs, X, Y, weights, max_number_of_pairs, standardize) {
+    .Call('_xyz_find_strongest_pairs', PACKAGE = 'xyz', pairs, X, Y, weights, max_number_of_pairs, standardize)
 }
 
 equalpairs <- function(u, v, ou, ov, max_number_of_pairs) {
@@ -61,16 +69,16 @@ projected_equal_pairs <- function(X, Y, number_of_runs, max_number_of_collisions
     .Call('_xyz_projected_equal_pairs', PACKAGE = 'xyz', X, Y, number_of_runs, max_number_of_collisions, negative)
 }
 
-naive_interaction_search <- function(X, Y, weights, max_number_of_pairs) {
-    .Call('_xyz_naive_interaction_search', PACKAGE = 'xyz', X, Y, weights, max_number_of_pairs)
+naive_interaction_search <- function(X, Y, weights, max_number_of_pairs, standardize) {
+    .Call('_xyz_naive_interaction_search', PACKAGE = 'xyz', X, Y, weights, max_number_of_pairs, standardize)
 }
 
-interaction_search <- function(X, Y, weights, number_of_runs, max_number_of_pairs, negative, binary) {
-    .Call('_xyz_interaction_search', PACKAGE = 'xyz', X, Y, weights, number_of_runs, max_number_of_pairs, negative, binary)
+interaction_search <- function(X, Y, weights, number_of_runs, max_number_of_pairs, negative, binary, standardize) {
+    .Call('_xyz_interaction_search', PACKAGE = 'xyz', X, Y, weights, number_of_runs, max_number_of_pairs, negative, binary, standardize)
 }
 
-interaction_search_low_level <- function(X_binary, X, Y, weights, number_of_runs, max_number_of_pairs) {
-    .Call('_xyz_interaction_search_low_level', PACKAGE = 'xyz', X_binary, X, Y, weights, number_of_runs, max_number_of_pairs)
+interaction_search_low_level <- function(X_binary, X, Y, weights, number_of_runs, max_number_of_pairs, standardize) {
+    .Call('_xyz_interaction_search_low_level', PACKAGE = 'xyz', X_binary, X, Y, weights, number_of_runs, max_number_of_pairs, standardize)
 }
 
 soft_threshold <- function(beta_tilde, normalization, lambda, alpha) {
@@ -81,12 +89,8 @@ create_lambda_sequence <- function(lambda_max, n_lambda, factor_eps_inv) {
     .Call('_xyz_create_lambda_sequence', PACKAGE = 'xyz', lambda_max, n_lambda, factor_eps_inv)
 }
 
-scan_main_effects <- function(X, Y, weights, main_effects, beta_main, lambdas, alpha, r, add_max, strong) {
-    .Call('_xyz_scan_main_effects', PACKAGE = 'xyz', X, Y, weights, main_effects, beta_main, lambdas, alpha, r, add_max, strong)
-}
-
-scale_intr <- function(X, pair_x, pair_y, standardize) {
-    .Call('_xyz_scale_intr', PACKAGE = 'xyz', X, pair_x, pair_y, standardize)
+scan_main_effects <- function(X, Y, weights, main_effects, beta_main, lambdas, alpha, standardize, r, add_max, strong) {
+    .Call('_xyz_scan_main_effects', PACKAGE = 'xyz', X, Y, weights, main_effects, beta_main, lambdas, alpha, standardize, r, add_max, strong)
 }
 
 scan_intr_effects <- function(X, residuals, X_bin, weights, intr_effects, beta_intr, intr_vars, lambdas, alpha, r, projections, standardize, strong) {
@@ -97,16 +101,16 @@ update_intr_final <- function(intr_effects, beta_intr) {
     invisible(.Call('_xyz_update_intr_final', PACKAGE = 'xyz', intr_effects, beta_intr))
 }
 
-calculate_xbeta <- function(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r) {
-    .Call('_xyz_calculate_xbeta', PACKAGE = 'xyz', X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r)
+calculate_xbeta <- function(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
+    .Call('_xyz_calculate_xbeta', PACKAGE = 'xyz', X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
 }
 
-calculate_residuals <- function(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r) {
-    .Call('_xyz_calculate_residuals', PACKAGE = 'xyz', X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r)
+calculate_residuals <- function(X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
+    .Call('_xyz_calculate_residuals', PACKAGE = 'xyz', X, Y, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
 }
 
-iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, r, maxiter_inner) {
-    .Call('_xyz_iterate', PACKAGE = 'xyz', X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, r, maxiter_inner)
+iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, standardize, r, maxiter_inner) {
+    .Call('_xyz_iterate', PACKAGE = 'xyz', X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, standardize, r, maxiter_inner)
 }
 
 update_intr_vars <- function(X, intr_effects, standardize, r) {

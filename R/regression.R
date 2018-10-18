@@ -7,8 +7,9 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
   L<-length(result[[1]])
   if(standardize) {
     main_effects<-result[[1]]; beta_main<-result[[2]]; intr_effects<-result[[3]]; beta_intr<-result[[4]]; intercept<-result[[6]];
-    mu_X<-attr(X,"scaled:center");sigma_X<-attr(X,"scaled:scale")
-    X<-unscale(X)
+    #mu_X<-attr(X,"scaled:center");sigma_X<-attr(X,"scaled:scale")
+    #X<-unscale(X)
+    mu_X <- colMeans(X); sigma_X <- apply(X,2,sd)
 
     for(l in 1:L) {
       for(i in 1:length(main_effects[[l]])) {
@@ -24,6 +25,7 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
       }
     }
   }
+
   if(standardize_response) {
     mu_Y<-attr(Y,"scaled:center"); sigma_Y<-attr(Y,"scaled:scale")
     for(l in 1:L) {
@@ -32,6 +34,11 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
       intercept[l]<-sigma_Y*intercept[l]+mu_Y
     }
   }
+
+  result[[2]] <- beta_main
+  result[[4]] <- beta_intr
+  result[[6]] <- intercept
+
   return(result)
 }
 
@@ -100,10 +107,6 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
     stop(paste("You have ",n," samples. The number of samples should at least be 10.",sep=""))
   }
 
-  if(standardize) {
-    X<-scale(X)
-  }
-  
   if(standardize_response) {
     Y<-scale(Y)
   }
@@ -112,7 +115,7 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   }
 
   wts <- weights/sum(weights)
-  
+
   max_main_effects<-100
   max_interaction_effects<-20
   result<-gaussiglmnet(X, Y, wts, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, 2, L)

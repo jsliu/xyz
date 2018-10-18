@@ -1,0 +1,5 @@
+CXXFLAGS = -Wall -g -O0 $(LTO)
+CXX98FLAGS = -Wall -g -O0
+CXX11FLAGS = -Wall -g -O0
+CXX14FLAGS = -Wall -g -O0
+CXX17FLAGS = -Wall -g -O0
