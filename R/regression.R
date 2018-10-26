@@ -5,10 +5,13 @@ unscale<-function(X) {
 
 standardize_result<-function(result,X,Y,standardize,standardize_response) {
   L<-length(result[[1]])
+  main_effects<-result[[1]]; 
+  beta_main<-result[[2]]; 
+  intr_effects<-result[[3]]; 
+  beta_intr<-result[[4]]; 
+  intercept<-result[[6]];
+  
   if(standardize) {
-    main_effects<-result[[1]]; beta_main<-result[[2]]; intr_effects<-result[[3]]; beta_intr<-result[[4]]; intercept<-result[[6]];
-    #mu_X<-attr(X,"scaled:center");sigma_X<-attr(X,"scaled:scale")
-    #X<-unscale(X)
     mu_X <- colMeans(X); sigma_X <- apply(X,2,sd)
 
     for(l in 1:L) {
@@ -68,8 +71,8 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
 #' @export
 #' @useDynLib xyz
 #' @importFrom Rcpp sourceCpp
-xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,standardize=TRUE,
-                         standardize_response=TRUE) {
+xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,
+                        standardize=TRUE, standardize_response=FALSE) {
   L<-round(L)
   if(L < 1) {
     stop("Number of runs has to be at least 1.")
@@ -123,6 +126,7 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   for(i in 1:L) {
     result[[1]][[i]]<-result[[1]][[i]]+1
     result[[3]][[i]]<-result[[3]][[i]]+1
+    result$df[i] <-length(result[[2]][[i]])+length(result[[4]][[i]])
   }
 
   result<-standardize_result(result,X,Y,standardize,standardize_response)
@@ -200,7 +204,7 @@ print.xyz_regression_result<-function(x,whichlambda=-1,...) {
 #' @importFrom graphics matplot legend
 #' @export
 plot.xyz_regression_result<-function(x,xvar=c("norm","lambda")) {
-  if( length(x) != 6 ) {
+  if( length(x) != 7 ) {
     stop("fit has parts missing")
   }
   main_effects<-x[[1]]
@@ -208,6 +212,7 @@ plot.xyz_regression_result<-function(x,xvar=c("norm","lambda")) {
   intr_effects<-x[[3]]
   intr_coefs<-x[[4]]
   lambdas<-x[[5]]
+  df <- x[[7]]
   path_length<-length(lambdas)
 
   l<-length(x[[1]])
@@ -271,12 +276,15 @@ plot.xyz_regression_result<-function(x,xvar=c("norm","lambda")) {
 
   xvar <- match.arg(xvar)
   switch(xvar,
-        "norm"={xaxis=c(0,beta_norm); xlab="L1 Norm"},
-        "lambda"={xaxis=c(0,log(lambdas)); xlab="Log Lambda"}
+        "norm"={xaxis=beta_norm; xlab="L1 Norm"; approx.f=1},
+        "lambda"={xaxis=log(lambdas); xlab="Log Lambda"; approx.f=0}
         )
-  yaxis <- rbind(0,t(all_paths))
+  yaxis <- t(all_paths)
   colors_plot<-c(rep("blue",nr_main),rep("red",nr_intr))
   matplot(xaxis,yaxis,type="l",col=colors_plot,lty=1,lwd=2,ylab="coefficients",xlab=xlab)
+  atdf <- pretty(xaxis)
+  prettydf <- approx(x=xaxis,y=df,xout=atdf,rule=2,method="constant",f=approx.f)$y
+  axis(3,at=atdf,labels=prettydf,tcl=NA)
   legend("topleft",legend=c("main effects","interaction effects"),lty=c(1,1),col=c("blue","red"))
 }
 
@@ -368,14 +376,13 @@ predict.ic.xyz_regression <- function(object, newdata, ...)
 #' @export
 plot.ic.xyz_regression <- function(object,...)
 {
-  n=object$glmnet$df
   llambda=log(object$glmnet[[5]])
   ic=object$ic.range
   ylab=names(object$ic[which(object$ic==ic[which.min(ic)])])
 
-  graphics::plot(llambda, ic, xlab = "log(Lambda)", ylab = substr(ylab, 1, 3),...)
-  graphics::abline(v = llambda[which.min(ic)], lty = 2)
-  graphics::axis(3, at = llambda, labels = n)
+  plot(llambda, ic, xlab = "log(Lambda)", ylab = substr(ylab, 1, 3),...)
+  abline(v = llambda[which.min(ic)], lty = 2)
+  axis(3, at = llambda, labels = n)
 }
 
 #convert_to_binary <- function(X,N)

@@ -6,7 +6,7 @@
 \usage{
 xyz_regression(X, Y, weights = NULL, lambdas = NULL, n_lambda = 10,
   alpha = 0.9, L = 10, standardize = TRUE,
-  standardize_response = TRUE)
+  standardize_response = FALSE)
 }
 \arguments{
 \item{X}{A matrix.}

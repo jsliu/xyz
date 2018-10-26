@@ -292,15 +292,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // create_lambda_sequence
-NumericVector create_lambda_sequence(double lambda_max, int n_lambda, double factor_eps_inv);
-RcppExport SEXP _xyz_create_lambda_sequence(SEXP lambda_maxSEXP, SEXP n_lambdaSEXP, SEXP factor_eps_invSEXP) {
+NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps, double factor_eps_inv);
+RcppExport SEXP _xyz_create_lambda_sequence(SEXP max_covSEXP, SEXP alphaSEXP, SEXP n_lambdaSEXP, SEXP epsSEXP, SEXP factor_eps_invSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type lambda_max(lambda_maxSEXP);
+    Rcpp::traits::input_parameter< double >::type max_cov(max_covSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< int >::type n_lambda(n_lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
     Rcpp::traits::input_parameter< double >::type factor_eps_inv(factor_eps_invSEXP);
-    rcpp_result_gen = Rcpp::wrap(create_lambda_sequence(lambda_max, n_lambda, factor_eps_inv));
+    rcpp_result_gen = Rcpp::wrap(create_lambda_sequence(max_cov, alpha, n_lambda, eps, factor_eps_inv));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -427,16 +429,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // update_intr_vars
-NumericMatrix update_intr_vars(const NumericMatrix& X, List intr_effects, bool standardize, int r);
-RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
+NumericMatrix update_intr_vars(const NumericMatrix& X, const NumericVector& weights, List intr_effects, bool standardize, int r);
+RcppExport SEXP _xyz_update_intr_vars(SEXP XSEXP, SEXP weightsSEXP, SEXP intr_effectsSEXP, SEXP standardizeSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< List >::type intr_effects(intr_effectsSEXP);
     Rcpp::traits::input_parameter< bool >::type standardize(standardizeSEXP);
     Rcpp::traits::input_parameter< int >::type r(rSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_intr_vars(X, intr_effects, standardize, r));
+    rcpp_result_gen = Rcpp::wrap(update_intr_vars(X, weights, intr_effects, standardize, r));
     return rcpp_result_gen;
 END_RCPP
 }

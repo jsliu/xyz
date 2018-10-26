@@ -209,15 +209,15 @@ NumericVector scale_main(NumericMatrix X, NumericVector weights, int col, bool s
     for (int i = 0; i < n; ++i) {
         xvec[i] = X(i,col);
         mean += X(i,col)*weights[i];
-        weights_sum += weights[i]*weights[i]; 
+        weights_sum += weights[i]*weights[i];
+    }
+
+    for (int i =0; i < n; ++i) {
+        xvec[i] = X(i,col) - mean;
+        var += xvec[i]*xvec[i]*weights[i];
     }
 
     if (standardize) {
-        //mean = mean/n;
-        for (int i =0; i < n; ++i) {
-            xvec[i] = X(i,col) - mean;
-            var += xvec[i]*xvec[i]*weights[i];     
-        }
         if (std::abs(var) > 0 && n > 1) {
             xvec = xvec/std::sqrt(var/(1-weights_sum));
         }
@@ -238,12 +238,12 @@ NumericVector scale_intr(NumericMatrix X, NumericVector weights, int pair_x, int
         weights_sum += weights[i]*weights[i];
     }
 
+    for (int i = 0; i < n; ++i) {
+        intr[i]=intr[i]-mean;
+        var += intr[i]*intr[i]*weights[i];
+    }
+
     if (standardize) {
-        //mean = mean/n;
-        for (int i = 0; i < n; ++i) {
-            intr[i]=intr[i]-mean;
-            var += intr[i]*intr[i]*weights[i];
-        }
         if (std::abs(var) > 0 && n > 1) {
             intr = intr/std::sqrt(var/(1-weights_sum));
         }
@@ -435,8 +435,6 @@ NumericVector estimate_background_interaction_frequency(IntegerMatrix X, Integer
     if (number_of_samples < 2) {
         number_of_samples = 2;
     }
-    SEXP x_sexp = SEXP (X);
-    SEXP y_sexp = SEXP (Y);
     NumericVector frequencies(number_of_samples);
     IntegerVector samples1 = sample_uniform(p,number_of_samples); IntegerVector samples2 = sample_uniform(p,number_of_samples);
 
@@ -685,7 +683,7 @@ List naive_interaction_search(NumericMatrix X, NumericVector Y, NumericVector we
 }
 
 // [[Rcpp::export]]
-List interaction_search(NumericMatrix X, NumericVector Y, NumericVector weights, 
+List interaction_search(NumericMatrix X, NumericVector Y, NumericVector weights,
                         int number_of_runs, int max_number_of_pairs, bool negative, bool binary, bool standardize) {
   int n = X.nrow();
   int p = X.ncol();
@@ -701,13 +699,13 @@ List interaction_search(NumericMatrix X, NumericVector Y, NumericVector weights,
     }
     int max_number_of_collisions = 2*p;
     List pairs = projected_equal_pairs(X_binary, Y,number_of_runs, max_number_of_collisions, negative);
-    result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs,standardize);    
+    result = find_strongest_pairs(pairs,X,Y,weights,max_number_of_pairs,standardize);
   }
   return result;
 }
 
 //[[Rcpp::export]]
-List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, NumericVector Y, NumericVector weights, 
+List interaction_search_low_level(IntegerMatrix X_binary,NumericMatrix X, NumericVector Y, NumericVector weights,
                                   int number_of_runs, int max_number_of_pairs, bool standardize) {
   int p = X.ncol();
   List result(2);
@@ -729,13 +727,14 @@ double soft_threshold(double beta_tilde, double normalization, double lambda, do
 }
 
 //[[Rcpp::export]]
-NumericVector create_lambda_sequence(double lambda_max, int n_lambda, double factor_eps_inv) {
+NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps = 0.001, double factor_eps_inv=100) {
     double eps_inv = factor_eps_inv; NumericVector lambdas(n_lambda);
     if (n_lambda < 2) stop("n_lambda has to be at least two");
-    lambdas[0] = lambda_max;
+    if (abs(alpha) < eps) alpha = eps;
+    lambdas[0] = max_cov/alpha;
 
     double b = std::log(eps_inv)/(n_lambda-1);
-    for (int i = 1; i < n_lambda; ++i) lambdas[i] = lambda_max*std::exp(-i*b);
+    for (int i = 1; i < n_lambda; ++i) lambdas[i] = lambdas[0]*std::exp(-i*b);
 
     return lambdas;
 }
@@ -746,21 +745,21 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
                        const NumericVector &lambdas, double alpha, bool standardize, int r, int add_max, bool strong) {
     /*check if sequential strong rule is applied at very beginning of lambda sequence*/
     int p = X.ncol();
+    
 
     if (strong && r == 0) strong = false; //stop("strong rule cannot be applied at lambda max");
 
     IntegerVector temp_main_effects = main_effects[r];
     NumericVector temp_beta_main = beta_main[r];
-    
+
     /*find effects already included*/
     LogicalVector already_contained(p);
     for (int l = 0; l < temp_main_effects.size(); ++l) {
         already_contained[temp_main_effects[l]] = true;
     }
-    
+
     NumericVector covs = absolute_covariates(X,Y,weights,standardize);
     IntegerVector order_covs = order_vector(covs,true);
-    SEXP covs_s = SEXP (covs);
     double threshold = alpha*lambdas[r];
 
     if (strong) threshold = alpha*(2*lambdas[r]-lambdas[r-1]);
@@ -770,7 +769,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
     int ptr = 0;
     int count = 0;
     /*pick vectors that are violating threshold condition*/
-    while (covs[order_covs[ptr]] >= threshold && ptr < p && count < add_max) {
+    while (ptr < p && count < add_max && covs[order_covs[ptr]] >= threshold) {
         if (!already_contained[order_covs[ptr]]) {
             coefs.push_back(order_covs[ptr]);
             ++count;
@@ -798,17 +797,12 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
     main_effects[r] = IntegerVector(temp_main_effects.size()+coefs.size());
     beta_main[r] = NumericVector(temp_beta_main.size()+coefs.size());
 
-    // debug use
-    double temp_beta_l = 0.0;
-    double new_beta_l = 0.0;
     for(int l = 0; l < temp_main_effects.size(); ++l) {
       new_main_effects[l] = temp_main_effects[l];
       new_beta_main[l] = temp_beta_main[l];
-      temp_beta_l = temp_beta_main[l];
-      new_beta_l = new_beta_main[l];
     }
-    int L = temp_main_effects.size();
-    
+   
+
     ptr = 0;
     int sum_size = temp_main_effects.size()+coefs.size();
     for (int l = temp_main_effects.size(); l < sum_size; ++l) {
@@ -817,14 +811,12 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
     }
     main_effects[r] = new_main_effects;
     beta_main[r] = new_beta_main;
-SEXP beta_sexp = SEXP(temp_beta_main);
-    SEXP new_beta = SEXP (new_beta_main);
     return true;
 }
 
 //[[Rcpp::export]]
 bool scan_intr_effects(const NumericMatrix &X, const NumericVector &residuals, const IntegerMatrix &X_bin, const NumericVector &weights,
-                       List intr_effects, List beta_intr, NumericMatrix &intr_vars, const NumericVector &lambdas, 
+                       List intr_effects, List beta_intr, NumericMatrix &intr_vars, const NumericVector &lambdas,
                        double alpha, int r, int projections, bool standardize, bool strong) {
 
     int n = X.nrow();
@@ -928,7 +920,7 @@ void update_intr_final(List intr_effects, List beta_intr) {
 
 //[[Rcpp::export]]
 NumericVector calculate_xbeta(const NumericMatrix &X, const NumericVector &Y, const NumericVector &weights,
-                                  const NumericVector &intercept, 
+                                  const NumericVector &intercept,
                                   const List main_effects, const List beta_main,
                                   const List intr_effects, const List beta_intr, const NumericMatrix &intr_vars,
                                   int r, bool standardize) {
@@ -953,9 +945,6 @@ NumericVector calculate_xbeta(const NumericMatrix &X, const NumericVector &Y, co
             }
         }
     }
-    SEXP beta = SEXP (temp_beta_main);
-    SEXP effects = SEXP (temp_main_effects);
-    SEXP intr = SEXP (beta_intr);
 
     /* deduct intr effects */
     NumericVector temp_beta_intr(beta_intr[r]);
@@ -966,7 +955,7 @@ NumericVector calculate_xbeta(const NumericMatrix &X, const NumericVector &Y, co
             }
         }
     }
-    
+
     return xbeta;
 }
 
@@ -988,7 +977,7 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
             const NumericVector &intercept,
             const List main_effects, List beta_main,
             const List intr_effects, List beta_intr, const NumericMatrix &intr_vars,
-            const NumericVector &weights, const NumericVector &lambdas, 
+            const NumericVector &weights, const NumericVector &lambdas,
             double alpha, bool standardize, int r, int maxiter_inner) {
 
     int n = X.nrow();
@@ -1012,11 +1001,9 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
     /* update main effects */
     NumericVector temp_beta_main = beta_main[r];
     NumericVector temp_beta_intr = beta_intr[r];
-    
+
     NumericVector main_vars(n);
 
-    SEXP beta_main_sexp = SEXP (beta_main[r]);
-    SEXP rr = SEXP (residuals);
     bool converged = false;
 
     double sum1 = 0.0;
@@ -1036,15 +1023,12 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
                 main_vars = scale_main(X,weights,variable,standardize);
                 sum1 = 0.0;
                 sum2 = 0.0;
-                SEXP X_sexp = SEXP(main_vars);
                 for (int i = 0; i < n; ++i) {
                     temp = weights[i]*main_vars[i];
                     sum1 += temp*residuals[i];
                     sum2 += temp*main_vars[i];
                 }
-                // debug use
-                double temp_beta_main_l = temp_beta_main[l];
-             
+
                 //beta_tilde = soft_threshold(sum1+temp_beta_main[l],sum2,lambdas[r]*std::sqrt(2.0),alpha);
                 beta_tilde = soft_threshold(sum1+temp_beta_main[l],sum2,lambdas[r],alpha);
                 delta = temp_beta_main[l]-beta_tilde;
@@ -1061,10 +1045,6 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
                 }
             }
         }
-           
-                
-                SEXP temp_beta_sexp = SEXP (temp_beta_main);
-                SEXP temp_beta2_sexp = SEXP (temp_beta_intr);
         /* update intr effects */
         if (nr_intr > 0) {
             for (int l = 0; l < nr_intr; ++l) {
@@ -1077,10 +1057,10 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
                 }
                 beta_tilde = soft_threshold(sum1+temp_beta_intr[l],sum2,lambdas[r],alpha);
                 delta = temp_beta_intr[l]-beta_tilde;
-                
+
                 if (std::abs(delta) > update_precision) {
                     converged = false;
-                   
+
                     /* update residuals */
                     for (int i = 0; i < n; ++i) {
                         residuals[i] = residuals[i]+intr_vars(i,l)*delta;
@@ -1089,15 +1069,13 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
                     //residuals = calculate_residuals(X,Y,intercept,main_effects,beta_main,intr_effects, beta_intr, intr_vars,r);
                 }
             }
-             
         }
-        
         ++count_iterations;
         if(count_iterations % steps_to_update_residuals == 0) {
             residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects, beta_intr, intr_vars,r,standardize);
         }
     }
-   
+
     /* propagate results */
     if(nr_main > 0) {
         beta_main[r] = temp_beta_main;
@@ -1111,7 +1089,7 @@ int iterate(const NumericMatrix &X, const NumericVector &Y, NumericVector &resid
 
 /* build interaction variables*/
 //[[Rcpp::export]]
-NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, bool standardize, int r) {
+NumericMatrix update_intr_vars(const NumericMatrix &X, const NumericVector &weights, List intr_effects, bool standardize, int r) {
     int n = X.nrow();
     IntegerMatrix temp_intr_effects = intr_effects[r];
     NumericMatrix intr_vars(n,temp_intr_effects.ncol());
@@ -1123,23 +1101,26 @@ NumericMatrix update_intr_vars(const NumericMatrix &X, List intr_effects, bool s
         NumericVector intr(n);
         double mean = 0.0;
         double var = 0.0;
+        double weights_sum = 0.0;
         for (int i = 0; i < n; ++i) {
             intr[i]=X(i,pair_x)*X(i,pair_y);
-            mean += intr[i];
+            mean += intr[i]*weights[i];
+            weights_sum += weights[i]*weights[i];
         }
         
+        mean = mean/n;
+        for (int i = 0; i < n; ++i) {
+            intr[i]=intr[i]-mean;
+            var += intr[i]*intr[i]*weights[i];
+        }
+
         if (standardize) {
-            mean = mean/n;
-            for (int i = 0; i < n; ++i) {
-                intr[i]=intr[i]-mean;
-                var += intr[i]*intr[i];
-            }
             if (std::abs(var) > 0 && n > 1) {
-                intr = intr/std::sqrt(var/(n-1));
+                intr = intr/std::sqrt(var/(1-weights_sum));
                 intr_vars(_,l) = intr;
             }
         }
-    
+
     }
     return intr_vars;
 }
@@ -1223,10 +1204,9 @@ void warm_start(List main_effects, List beta_main,
 }
 
 // [[Rcpp::export]]
-List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas, 
-                  double alpha, bool standardize, 
-                  int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
-    
+List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, NumericVector lambdas,
+                  double alpha, bool standardize, int max_main_effects, int max_interaction_effects, int max_outer, int number_of_nnis_runs) {
+
     int n = X.nrow(); int n_lambda = lambdas.size();
 
     int maxiter_inner=1000; int add_max_main = 100;
@@ -1243,60 +1223,48 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
     NumericVector covs = absolute_covariates(X,residuals,weights,standardize);
 
-    if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,n_lambda,10.0);
+    if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,alpha,n_lambda);
 
     bool changed = false;
-
     for (int r = 0; r < n_lambda; ++r) {
         intercept[r] = mean(Y);
         for (int iter = 0; iter < max_outer; ++iter) {
 
             changed = true;
             changed = scan_main_effects(X,residuals,weights,main_effects,beta_main,lambdas,alpha,standardize,r,add_max_main,true);
-           SEXP rr = SEXP (residuals);
-            SEXP beta = SEXP (beta_main);
-            SEXP beta2 = SEXP (beta_intr); 
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
             residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r,standardize);
-           
             changed = changed & scan_intr_effects(X,residuals,X_bin,weights,intr_effects,beta_intr,intr_vars,lambdas,alpha,r,number_of_nnis_runs,standardize,true);
-            intr_vars = update_intr_vars(X,intr_effects,standardize,r);
-            SEXP res = SEXP (residuals);  
+            intr_vars = update_intr_vars(X,weights,intr_effects,standardize,r);
             iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
             residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r,standardize);
-           
             if (!changed) {
                 break;
             }
         }
-            
+
         clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
-
-        intr_vars = update_intr_vars(X,intr_effects,standardize,r);
-
+        intr_vars = update_intr_vars(X,weights,intr_effects,standardize,r);
         iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
-
+       
         if(r < n_lambda-1) warm_start(main_effects,beta_main,intr_effects,beta_intr,r);
+     
     }
-
+    
     int last_entry = intr_effects.size()-1;
     /*start the second loop*/
     for (int r = 0; r < n_lambda; ++r) {
-            intr_effects[r] = intr_effects[last_entry];
-
-            beta_intr[r] = beta_intr[last_entry];
-
-            scan_main_effects(X,residuals,weights,main_effects,beta_main,lambdas,alpha,standardize,r,add_max_main,true);
-
-            iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
-
-            residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r,standardize);
-
-            iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
-
-            residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r,standardize);
-
-            clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
+        intr_effects[r] = intr_effects[last_entry];
+        beta_intr[r] = beta_intr[last_entry];
+        scan_main_effects(X,residuals,weights,main_effects,beta_main,lambdas,alpha,standardize,r,add_max_main,true);
+        iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
+        residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r,standardize);
+        iterate(X,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,weights,lambdas,alpha,standardize,r,maxiter_inner);
+        residuals = calculate_residuals(X,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,intr_vars,r,standardize);
+        clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
+      
     }
-    return List::create(main_effects,beta_main,intr_effects,beta_intr,lambdas,intercept);
+    return List::create(_["main_effects"]=main_effects,_["beta_main"]=beta_main,
+                        _["intr_effects"]=intr_effects,_["beta_intr"]=beta_intr,
+                        _["lambdas"]=lambdas,_["intercept"]=intercept);
 }

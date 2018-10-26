@@ -85,8 +85,8 @@ soft_threshold <- function(beta_tilde, normalization, lambda, alpha) {
     .Call('_xyz_soft_threshold', PACKAGE = 'xyz', beta_tilde, normalization, lambda, alpha)
 }
 
-create_lambda_sequence <- function(lambda_max, n_lambda, factor_eps_inv) {
-    .Call('_xyz_create_lambda_sequence', PACKAGE = 'xyz', lambda_max, n_lambda, factor_eps_inv)
+create_lambda_sequence <- function(max_cov, alpha, n_lambda, eps = 0.001, factor_eps_inv = 100) {
+    .Call('_xyz_create_lambda_sequence', PACKAGE = 'xyz', max_cov, alpha, n_lambda, eps, factor_eps_inv)
 }
 
 scan_main_effects <- function(X, Y, weights, main_effects, beta_main, lambdas, alpha, standardize, r, add_max, strong) {
@@ -113,8 +113,8 @@ iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_ef
     .Call('_xyz_iterate', PACKAGE = 'xyz', X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, standardize, r, maxiter_inner)
 }
 
-update_intr_vars <- function(X, intr_effects, standardize, r) {
-    .Call('_xyz_update_intr_vars', PACKAGE = 'xyz', X, intr_effects, standardize, r)
+update_intr_vars <- function(X, weights, intr_effects, standardize, r) {
+    .Call('_xyz_update_intr_vars', PACKAGE = 'xyz', X, weights, intr_effects, standardize, r)
 }
 
 clean_all_effects <- function(main_effects, beta_main, intr_effects, beta_intr, r) {
