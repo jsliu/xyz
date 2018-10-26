@@ -29,8 +29,8 @@ colsum_index <- function(X, indexes) {
     .Call('_xyz_colsum_index', PACKAGE = 'xyz', X, indexes)
 }
 
-scale_main <- function(X, weights, col, standardize) {
-    .Call('_xyz_scale_main', PACKAGE = 'xyz', X, weights, col, standardize)
+scale_main <- function(X, weights, standardize) {
+    .Call('_xyz_scale_main', PACKAGE = 'xyz', X, weights, standardize)
 }
 
 scale_intr <- function(X, weights, pair_x, pair_y, standardize) {
@@ -101,16 +101,16 @@ update_intr_final <- function(intr_effects, beta_intr) {
     invisible(.Call('_xyz_update_intr_final', PACKAGE = 'xyz', intr_effects, beta_intr))
 }
 
-calculate_xbeta <- function(X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
-    .Call('_xyz_calculate_xbeta', PACKAGE = 'xyz', X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
+calculate_xbeta <- function(main_vars, intr_vars, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, r, standardize) {
+    .Call('_xyz_calculate_xbeta', PACKAGE = 'xyz', main_vars, intr_vars, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, r, standardize)
 }
 
-calculate_residuals <- function(X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize) {
-    .Call('_xyz_calculate_residuals', PACKAGE = 'xyz', X, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, r, standardize)
+calculate_residuals <- function(main_vars, intr_vars, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, r, standardize) {
+    .Call('_xyz_calculate_residuals', PACKAGE = 'xyz', main_vars, intr_vars, Y, weights, intercept, main_effects, beta_main, intr_effects, beta_intr, r, standardize)
 }
 
-iterate <- function(X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, standardize, r, maxiter_inner) {
-    .Call('_xyz_iterate', PACKAGE = 'xyz', X, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, intr_vars, weights, lambdas, alpha, standardize, r, maxiter_inner)
+iterate <- function(main_vars, intr_vars, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, weights, lambdas, alpha, standardize, r, maxiter_inner) {
+    .Call('_xyz_iterate', PACKAGE = 'xyz', main_vars, intr_vars, Y, residuals, intercept, main_effects, beta_main, intr_effects, beta_intr, weights, lambdas, alpha, standardize, r, maxiter_inner)
 }
 
 update_intr_vars <- function(X, weights, intr_effects, standardize, r) {

@@ -30,7 +30,7 @@ extern SEXP _xyz_projected_equal_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_sample_int_replace(SEXP, SEXP);
 extern SEXP _xyz_sample_uniform(SEXP, SEXP);
 extern SEXP _xyz_scale_intr(SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _xyz_scale_main(SEXP, SEXP, SEXP, SEXP);
+extern SEXP _xyz_scale_main(SEXP, SEXP, SEXP);
 extern SEXP _xyz_scan_intr_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_scan_main_effects(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz_soft_threshold(SEXP, SEXP, SEXP, SEXP);
@@ -64,7 +64,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_xyz_sample_int_replace",                        (DL_FUNC) &_xyz_sample_int_replace,                         2},
     {"_xyz_sample_uniform",                            (DL_FUNC) &_xyz_sample_uniform,                             2},
     {"_xyz_scale_intr",                                (DL_FUNC) &_xyz_scale_intr,                                 5},
-    {"_xyz_scale_main",                                (DL_FUNC) &_xyz_scale_main,                                 4},
+    {"_xyz_scale_main",                                (DL_FUNC) &_xyz_scale_main,                                 3},
     {"_xyz_scan_intr_effects",                         (DL_FUNC) &_xyz_scan_intr_effects,                         13},
     {"_xyz_scan_main_effects",                         (DL_FUNC) &_xyz_scan_main_effects,                         11},
     {"_xyz_soft_threshold",                            (DL_FUNC) &_xyz_soft_threshold,                             4},

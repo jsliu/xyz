@@ -71,8 +71,7 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
 #' @export
 #' @useDynLib xyz
 #' @importFrom Rcpp sourceCpp
-xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,
-                        standardize=TRUE, standardize_response=FALSE) {
+xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,standardize_response=FALSE) {
   L<-round(L)
   if(L < 1) {
     stop("Number of runs has to be at least 1.")
@@ -121,6 +120,7 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
 
   max_main_effects<-100
   max_interaction_effects<-20
+  standardize <- TRUE
   result<-gaussiglmnet(X, Y, wts, lambdas, alpha, standardize, max_main_effects, max_interaction_effects, 2, L)
   L<-length(result[[1]])
   for(i in 1:L) {
