@@ -1,4 +1,5 @@
 library(xyz)
+rm(list=ls())
 n1 <- 300
 n2 <- 200
 p <- 1000

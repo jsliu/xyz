@@ -307,7 +307,6 @@ NumericVector absolute_covariates_pairs(IntegerMatrix pairs, NumericMatrix X, Nu
     return abs_cov;
 }
 
-
 typedef std::pair<int, int> paired_int;
 
 bool cmp_paired_int(paired_int left, paired_int right) {
@@ -837,17 +836,15 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &residuals, c
     }
 
     IntegerMatrix pairs_is = result_interaction_search(0);
+    NumericVector covariates = result_interaction_search(1);
 
     int number_considered = std::min(20,pairs_is.ncol());
 
-    NumericVector covariates(number_considered);
-    //NumericMatrix intr_vars_new(n,number_considered);
+    //NumericVector covariates(number_considered);
 
     IntegerMatrix temp_intr_effects = intr_effects[r];
     NumericVector temp_beta_intr = beta_intr[r];
     NumericVector temp_itr(n);
-
-    double sum1 = 0.0;
 
     int count = 0;
 
@@ -857,15 +854,7 @@ bool scan_intr_effects(const NumericMatrix &X, const NumericVector &residuals, c
     indexes.reserve(number_considered);
 
     for (int l = 0; l < number_considered; ++l) {
-        sum1 = 0.0;
-        temp_itr = scale_intr(X,weights,pairs_is(0,l),pairs_is(1,l), standardize);
-        for (int i = 0; i < n; ++i) {
-            sum1 += temp_itr[i]*residuals[i]*weights[i];
-            //intr_vars_new(i,l) = temp_itr[i];
-        }
-
-        covariates[l] = sum1;
-        if (std::abs(sum1) > threshold) {
+        if (covariates[l] > threshold) {
 
             bool duplicate = false;
 

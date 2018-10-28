@@ -5,12 +5,12 @@ unscale<-function(X) {
 
 standardize_result<-function(result,X,Y,standardize,standardize_response) {
   L<-length(result[[1]])
-  main_effects<-result[[1]]; 
-  beta_main<-result[[2]]; 
-  intr_effects<-result[[3]]; 
-  beta_intr<-result[[4]]; 
+  main_effects<-result[[1]];
+  beta_main<-result[[2]];
+  intr_effects<-result[[3]];
+  beta_intr<-result[[4]];
   intercept<-result[[6]];
-  
+
   if(standardize) {
     mu_X <- colMeans(X); sigma_X <- apply(X,2,sd)
 
@@ -376,6 +376,7 @@ predict.ic.xyz_regression <- function(object, newdata, ...)
 #' @export
 plot.ic.xyz_regression <- function(object,...)
 {
+  n <- object$glmnet$df
   llambda=log(object$glmnet[[5]])
   ic=object$ic.range
   ylab=names(object$ic[which(object$ic==ic[which.min(ic)])])
@@ -384,15 +385,3 @@ plot.ic.xyz_regression <- function(object,...)
   abline(v = llambda[which.min(ic)], lty = 2)
   axis(3, at = llambda, labels = n)
 }
-
-#convert_to_binary <- function(X,N)
-#{
-#  X.bin <- translate_to_binary(X,N)
-#  return(X.bin)
-#}
-
-#estimate_interaction_strength <- function(X, Y, n)
-#{
-#  frequency <- estimate_background_interaction_frequency(X,Y, n)
-#  return(frequency)
-#}
