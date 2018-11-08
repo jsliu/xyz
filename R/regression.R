@@ -387,7 +387,8 @@ plot.ic.xyz_regression <- function(object,...)
 }
 
 #' @export
-covaraites <- function(x,y,wei,standardize)
+covariates <- function(x,y,wei,standardize)
 {
   cov.mat <- absolute_covariates(x,y,wei,standardize)
+  return(cov.mat)
 }
