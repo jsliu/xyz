@@ -69,7 +69,7 @@ standardize_result<-function(result,X,Y,standardize,standardize_response) {
 #' #plot the result
 #' plot(result)
 #' @export
-#' @useDynLib xyz
+#' @useDynLib xyz2
 #' @importFrom Rcpp sourceCpp
 xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=10,standardize_response=FALSE) {
   L<-round(L)

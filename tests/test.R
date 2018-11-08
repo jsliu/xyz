@@ -1,4 +1,4 @@
-library(xyz)
+library(xyz2)
 rm(list=ls())
 n1 <- 300
 n2 <- 200

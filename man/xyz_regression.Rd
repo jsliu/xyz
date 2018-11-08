@@ -5,8 +5,7 @@
 \title{Elasticnet with interactions (glmnet)}
 \usage{
 xyz_regression(X, Y, weights = NULL, lambdas = NULL, n_lambda = 10,
-  alpha = 0.9, L = 10, standardize = TRUE,
-  standardize_response = FALSE)
+  alpha = 0.9, L = 10, standardize_response = FALSE)
 }
 \arguments{
 \item{X}{A matrix.}
@@ -21,9 +20,9 @@ xyz_regression(X, Y, weights = NULL, lambdas = NULL, n_lambda = 10,
 
 \item{L}{An integer indicating how many projection steps are performed.}
 
-\item{standardize}{A boolean indicating if X should be scaled and centered.}
-
 \item{standardize_response}{A boolean indicating if Y should be scaled and centered.}
+
+\item{standardize}{A boolean indicating if X should be scaled and centered.}
 }
 \value{
 \code{N} strongest interactions (of type \code{type}) between \code{X} and \code{Y} after \code{L} projections.

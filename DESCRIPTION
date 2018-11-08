@@ -1,8 +1,8 @@
-Package: xyz
+Package: xyz2
 Type: Package
 Title: The 'xyz' Algorithm for Fast Interaction Search in High-Dimensional Data
-Version: 0.3.1
-Date: 2016-10-17
+Version: 0.3.2
+Date: 2018-11-08
 Maintainer: Gian-Andrea Thanei <thanei@stat.math.ethz.ch>
 Author: Gian-Andrea Thanei
 Description: High dimensional interaction search by brute force requires a
@@ -14,7 +14,7 @@ Imports:
   stats,
   Rcpp (>= 0.12.6)
 LinkingTo: Rcpp
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 SystemRequirements: C++11
