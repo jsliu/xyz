@@ -737,8 +737,8 @@ NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda,
     if (alpha < 0) stop("alpha has to be greater than zero");
     if (alpha < eps) alpha = eps;
     lambdas[0] = max_cov/alpha;
-    double b = std::log(eps_inv)/(n_lambda-1);
-    for (int i = 1; i < n_lambda; ++i) lambdas[i] = lambdas[0]*std::exp(-i*b);
+    double b = std::log(eps_inv)/double(n_lambda-1);
+    for (int i = 1; i < n_lambda; ++i) lambdas[i] = lambdas[0]*std::exp(-double(i)*b);
 
     return lambdas;
 }
