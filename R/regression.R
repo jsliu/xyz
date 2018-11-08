@@ -392,3 +392,10 @@ covariates <- function(x,y,wei,standardize)
   cov.mat <- absolute_covariates(x,y,wei,standardize)
   return(cov.mat)
 }
+
+#' @export
+create.lambda <- function(max.cov,alpha,n_lambda)
+{
+  lambdas <- create_lambda_sequence(max.cov,alpha,n_lambda)
+  return(lambdas)
+}

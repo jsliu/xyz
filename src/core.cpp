@@ -731,7 +731,7 @@ double soft_threshold(double beta_tilde, double normalization, double lambda, do
 }
 
 //[[Rcpp::export]]
-NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps = 0.001, double factor_eps_inv=100) {
+NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps = 0.001, double factor_eps_inv = 100.0) {
     double eps_inv = factor_eps_inv; NumericVector lambdas(n_lambda);
     if (n_lambda < 2) stop("n_lambda has to be at least two");
     if (abs(alpha) < eps) alpha = eps;
@@ -749,7 +749,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
                        const NumericVector &lambdas, double alpha, bool standardize, int r, int add_max, bool strong) {
     /*check if sequential strong rule is applied at very beginning of lambda sequence*/
     int p = X.ncol();
-    
+
 
     if (strong && r == 0) strong = false; //stop("strong rule cannot be applied at lambda max");
 
@@ -805,7 +805,7 @@ bool scan_main_effects(const NumericMatrix &X, const NumericVector &Y, const Num
       new_main_effects[l] = temp_main_effects[l];
       new_beta_main[l] = temp_beta_main[l];
     }
-   
+
 
     ptr = 0;
     int sum_size = temp_main_effects.size()+coefs.size();
@@ -913,10 +913,10 @@ void update_intr_final(List intr_effects, List beta_intr) {
 }
 
 //[[Rcpp::export]]
-NumericVector calculate_xbeta(const NumericMatrix &main_vars, const NumericMatrix &intr_vars, const NumericVector &Y, 
+NumericVector calculate_xbeta(const NumericMatrix &main_vars, const NumericMatrix &intr_vars, const NumericVector &Y,
                               const NumericVector &weights, const NumericVector &intercept,
                               const List main_effects, const List beta_main,
-                              const List intr_effects, const List beta_intr, 
+                              const List intr_effects, const List beta_intr,
                               int r, bool standardize) {
 
     int n = Y.size();
@@ -953,10 +953,10 @@ NumericVector calculate_xbeta(const NumericMatrix &main_vars, const NumericMatri
 
 /* calculate residuals */
 //[[Rcpp::export]]
-NumericVector calculate_residuals(const NumericMatrix &main_vars, const NumericMatrix &intr_vars, const NumericVector &Y, 
+NumericVector calculate_residuals(const NumericMatrix &main_vars, const NumericMatrix &intr_vars, const NumericVector &Y,
                                   const NumericVector &weights, const NumericVector &intercept,
                                   const List main_effects, const List beta_main,
-                                  const List intr_effects, const List beta_intr, 
+                                  const List intr_effects, const List beta_intr,
                                   int r, bool standardize) {
     int n = Y.size();
     NumericVector res(n);
@@ -968,7 +968,7 @@ NumericVector calculate_residuals(const NumericMatrix &main_vars, const NumericM
 int iterate(const NumericMatrix &main_vars, const NumericMatrix &intr_vars, const NumericVector &Y, NumericVector &residuals,
             const NumericVector &intercept,
             const List main_effects, List beta_main,
-            const List intr_effects, List beta_intr, 
+            const List intr_effects, List beta_intr,
             const NumericVector &weights, const NumericVector &lambdas,
             double alpha, bool standardize, int r, int maxiter_inner) {
 
@@ -1096,7 +1096,7 @@ NumericMatrix update_intr_vars(const NumericMatrix &X, const NumericVector &weig
             mean += intr[i]*weights[i];
             weights_sum += weights[i]*weights[i];
         }
-        
+
         mean = mean/n;
         for (int i = 0; i < n; ++i) {
             intr[i]=intr[i]-mean;
@@ -1235,11 +1235,11 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
         clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
         intr_vars = update_intr_vars(X,weights,intr_effects,standardize,r);
         iterate(main_vars,intr_vars,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,weights,lambdas,alpha,standardize,r,maxiter_inner);
-       
+
         if(r < n_lambda-1) warm_start(main_effects,beta_main,intr_effects,beta_intr,r);
-     
+
     }
-    
+
     int last_entry = intr_effects.size()-1;
     /*start the second loop*/
     for (int r = 0; r < n_lambda; ++r) {
@@ -1251,7 +1251,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
         iterate(main_vars,intr_vars,Y,residuals,intercept,main_effects,beta_main,intr_effects,beta_intr,weights,lambdas,alpha,standardize,r,maxiter_inner);
         residuals = calculate_residuals(main_vars,intr_vars,Y,weights,intercept,main_effects,beta_main,intr_effects,beta_intr,r,standardize);
         clean_all_effects(main_effects,beta_main,intr_effects,beta_intr,r);
-      
+
     }
     return List::create(_["main_effects"]=main_effects,_["beta_main"]=beta_main,
                         _["intr_effects"]=intr_effects,_["beta_intr"]=beta_intr,
