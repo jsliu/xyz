@@ -96,6 +96,9 @@ xyz_regression<-function(X,Y,weights=NULL,lambdas=NULL,n_lambda=10,alpha=0.9,L=1
   if(is.null(weights)) {
     weights <- rep(1.0/n,n)
   }
+  if (alpha < 0 || alpha > 1)
+    stop("alpha has to be between 0 and 1.")
+
   if(!is.vector(Y)) {
     stop("Y has to be a vector.")
   }

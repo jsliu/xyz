@@ -734,9 +734,9 @@ double soft_threshold(double beta_tilde, double normalization, double lambda, do
 NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps = 0.001, double factor_eps_inv = 100.0) {
     double eps_inv = factor_eps_inv; NumericVector lambdas(n_lambda);
     if (n_lambda < 2) stop("n_lambda has to be at least two");
-    if (std::abs(double (alpha)) < eps) alpha = eps;
+    if (alpha < 0) stop("alpha has to be greater than zero");
+    if (alpha < eps) alpha = eps;
     lambdas[0] = max_cov/alpha;
-
     double b = std::log(eps_inv)/(n_lambda-1);
     for (int i = 1; i < n_lambda; ++i) lambdas[i] = lambdas[0]*std::exp(-i*b);
 
