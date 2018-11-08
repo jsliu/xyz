@@ -385,3 +385,9 @@ plot.ic.xyz_regression <- function(object,...)
   abline(v = llambda[which.min(ic)], lty = 2)
   axis(3, at = llambda, labels = n)
 }
+
+#' @export
+covaraites <- function(x,y,wei,standardize)
+{
+  cov.mat <- absolute_covariates(x,y,wei,standardize)
+}
