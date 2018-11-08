@@ -85,8 +85,8 @@ soft_threshold <- function(beta_tilde, normalization, lambda, alpha) {
     .Call('_xyz2_soft_threshold', PACKAGE = 'xyz2', beta_tilde, normalization, lambda, alpha)
 }
 
-create_lambda_sequence <- function(max_cov, alpha, n_lambda, eps, factor_eps_inv) {
-    .Call('_xyz2_create_lambda_sequence', PACKAGE = 'xyz2', max_cov, alpha, n_lambda, eps, factor_eps_inv)
+create_lambda_sequence <- function(max_cov, alpha, n_lambda, factor_eps_inv) {
+    .Call('_xyz2_create_lambda_sequence', PACKAGE = 'xyz2', max_cov, alpha, n_lambda, factor_eps_inv)
 }
 
 scan_main_effects <- function(X, Y, weights, main_effects, beta_main, lambdas, alpha, standardize, r, add_max, strong) {

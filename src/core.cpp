@@ -731,13 +731,14 @@ double soft_threshold(double beta_tilde, double normalization, double lambda, do
 }
 
 //[[Rcpp::export]]
-NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps, double factor_eps_inv) {
-    double eps_inv = factor_eps_inv; NumericVector lambdas(n_lambda);
+NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double factor_eps_inv) {
+    NumericVector lambdas(n_lambda);
+    double eps = 1.0/factor_eps_inv;
     if (n_lambda < 2) stop("n_lambda has to be at least two");
     if (alpha < 0.0) stop("alpha has to be greater than zero");
     if (alpha < eps) alpha = eps;
     lambdas[0] = max_cov/alpha;
-    double b = std::log(eps_inv)/(n_lambda-1);
+    double b = std::log(factor_eps_inv)/(n_lambda-1);
     for (int i = 1; i < n_lambda; ++i) lambdas[i] = lambdas[0]*std::exp(-i*b);
 
     return lambdas;
@@ -1212,7 +1213,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
     NumericVector covs = absolute_covariates(main_vars,residuals,weights,standardize);
 
-    if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,alpha,n_lambda,0.001,100.0);
+    if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,alpha,n_lambda,100.0);
 
     bool changed = false;
     for (int r = 0; r < n_lambda; ++r) {

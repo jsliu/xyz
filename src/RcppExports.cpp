@@ -291,17 +291,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // create_lambda_sequence
-NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps, double factor_eps_inv);
-RcppExport SEXP _xyz2_create_lambda_sequence(SEXP max_covSEXP, SEXP alphaSEXP, SEXP n_lambdaSEXP, SEXP epsSEXP, SEXP factor_eps_invSEXP) {
+NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double factor_eps_inv);
+RcppExport SEXP _xyz2_create_lambda_sequence(SEXP max_covSEXP, SEXP alphaSEXP, SEXP n_lambdaSEXP, SEXP factor_eps_invSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type max_cov(max_covSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< int >::type n_lambda(n_lambdaSEXP);
-    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
     Rcpp::traits::input_parameter< double >::type factor_eps_inv(factor_eps_invSEXP);
-    rcpp_result_gen = Rcpp::wrap(create_lambda_sequence(max_cov, alpha, n_lambda, eps, factor_eps_inv));
+    rcpp_result_gen = Rcpp::wrap(create_lambda_sequence(max_cov, alpha, n_lambda, factor_eps_inv));
     return rcpp_result_gen;
 END_RCPP
 }
