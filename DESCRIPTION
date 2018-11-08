@@ -3,7 +3,7 @@ Type: Package
 Title: The 'xyz' Algorithm for Fast Interaction Search in High-Dimensional Data
 Version: 0.3.2
 Date: 2018-11-08
-Maintainer: Gian-Andrea Thanei <thanei@stat.math.ethz.ch>
+Maintainer: Zhen Liu <zhen.liu@aberdee-asset.com>
 Author: Gian-Andrea Thanei
 Description: High dimensional interaction search by brute force requires a
     quadratic computational cost in the number of variables. The xyz algorithm provably finds strong interactions in almost linear time.
