@@ -731,7 +731,7 @@ double soft_threshold(double beta_tilde, double normalization, double lambda, do
 }
 
 //[[Rcpp::export]]
-NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps = 0.001, double factor_eps_inv = 100.0) {
+NumericVector create_lambda_sequence(double max_cov, double alpha, int n_lambda, double eps, double factor_eps_inv) {
     double eps_inv = factor_eps_inv; NumericVector lambdas(n_lambda);
     if (n_lambda < 2) stop("n_lambda has to be at least two");
     if (alpha < 0.0) stop("alpha has to be greater than zero");
@@ -1212,7 +1212,7 @@ List gaussiglmnet(NumericMatrix X, NumericVector Y, NumericVector weights, Numer
 
     NumericVector covs = absolute_covariates(main_vars,residuals,weights,standardize);
 
-    if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,alpha,n_lambda);
+    if(lambdas[0] < 0) lambdas = create_lambda_sequence(max(covs)-0.001,alpha,n_lambda,0.001,100.0);
 
     bool changed = false;
     for (int r = 0; r < n_lambda; ++r) {
