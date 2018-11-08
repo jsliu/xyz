@@ -397,8 +397,8 @@ covariates <- function(x,y,wei,standardize)
 }
 
 #' @export
-createLambda <- function(max.cov,alpha,n_lambda)
+createLambda <- function(max.cov,alpha,n_lambda,eps,factro.inv)
 {
-  lambdas <- create_lambda_sequence(max.cov,alpha,n_lambda)
+  lambdas <- create_lambda_sequence(max.cov,alpha,n_lambda,0.001,100)
   return(lambdas)
 }
