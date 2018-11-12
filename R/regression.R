@@ -389,16 +389,16 @@ plot.ic.xyz_regression <- function(object,...)
   axis(3, at = llambda, labels = n)
 }
 
-#' @export
-covariates <- function(x,y,wei,standardize)
-{
-  cov.mat <- absolute_covariates(x,y,wei,standardize)
-  return(cov.mat)
-}
-
-#' @export
-createLambda <- function(max.cov,alpha,n_lambda,factor.inv)
-{
-  lambdas <- create_lambda_sequence(max.cov+0.0001,alpha+0.0001,n_lambda,factor.inv)
-  return(lambdas)
-}
+#' #' @export
+#' covariates <- function(x,y,wei,standardize)
+#' {
+#'   cov.mat <- absolute_covariates(x,y,wei,standardize)
+#'   return(cov.mat)
+#' }
+#'
+#' #' @export
+#' createLambda <- function(max.cov,alpha,n_lambda,factor.inv)
+#' {
+#'   lambdas <- create_lambda_sequence(max.cov,alpha,n_lambda,factor.inv)
+#'   return(lambdas)
+#' }
