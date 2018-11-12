@@ -20,7 +20,7 @@ Y <- c(Y1,Y2)
 wei <- c(rep(0.1,n1),rep(0.9,n2))
 alpha <- 0.9
 result <- xyz_regression(X1,Y1,n_lambda = 10, alpha = alpha, L = 10)
-#result3 <- ic.xyz_regression(X1,Y1,n_lambda = 10, alpha = 0.9, L = 10)
+result3 <- ic.xyz_regression(X1,Y1,n_lambda = 10, alpha = 0.9, L = 10)
 windows()
 print(result)
 plot(result,xvar="lambda")

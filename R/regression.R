@@ -296,10 +296,10 @@ predict.xyz_regression_result<-function(object,newdata,...) {
   l<-length(object[[1]])
   Y_pred_matrix<-matrix(0,dim(newdata)[1],l)
   for(i in 1:l) {
-    main_effects<-c(object[[1]][[i]],1)
-    beta_main<-c(object[[2]][[i]],0)
-    intr_effects<-cbind(object[[3]][[i]],c(1,1))
-    beta_intr<-c(object[[4]][[i]],0)
+    main_effects<-object[[1]][[i]]
+    beta_main<-object[[2]][[i]]
+    intr_effects<-object[[3]][[i]]
+    beta_intr<-object[[4]][[i]]
     intercept<-object[[6]][i]
     Y_pred_matrix[,i]<-intercept+newdata[,main_effects]%*%beta_main+(newdata[,intr_effects[1,]]*newdata[,intr_effects[2,]])%*%beta_intr
   }
@@ -353,10 +353,10 @@ coef.ic.xyz_regression <- function(object)
 {
   selected <- object$best.model
   model <- object$glmnet
-  main_effects <- c(model[[1]][[selected]],1)
-  beta_main <- c(model[[2]][[selected]],0)
-  intr_effects <- cbind(model[[3]][[selected]],c(1,1))
-  beta_intr <- c(model[[4]][[selected]],0)
+  main_effects <- model[[1]][[selected]]
+  beta_main <- model[[2]][[selected]]
+  intr_effects <- model[[3]][[selected]]
+  beta_intr <- model[[4]][[selected]]
   intercept <- model[[6]][selected]
 
   return(list(main_effects=main_effects,beta_main=beta_main,intr_effects=intr_effects,beta_intr=beta_intr,intercept=intercept))
@@ -371,7 +371,7 @@ predict.ic.xyz_regression <- function(object, newdata, ...)
   intr_effects <- coeffs$intr_effects
   beta_intr <- coeffs$beta_intr
   intercept <- coeffs$intercept
-  Y_pred <- intercept+newdata[,main_effects]%*%beta_main+(newdata[,intr_effects[1,]]*newdata[,intr_effects[2,]])%*%beta_intr
+  Y_pred <- intercept+newdata[,main_effects,drop=F]%*%beta_main+(newdata[,intr_effects[1,],drop=F]*newdata[,intr_effects[2,],drop=F])%*%beta_intr
 
   return(as.vector(Y_pred))
 }
