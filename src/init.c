@@ -3,12 +3,12 @@
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-/* FIXME:
-Check these declarations against the C/Fortran source code.
-*/
+  /* FIXME:
+  Check these declarations against the C/Fortran source code.
+  */
 
-/* .Call calls */
-extern SEXP _xyz2_absolute_covariates(SEXP, SEXP, SEXP, SEXP);
+  /* .Call calls */
+  extern SEXP _xyz2_absolute_covariates(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz2_absolute_covariates_pairs(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz2_calculate_residuals(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _xyz2_calculate_xbeta(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
