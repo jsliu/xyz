@@ -295,13 +295,14 @@ plot.xyz_regression_result<-function(x,xvar=c("norm","lambda")) {
 predict.xyz_regression_result<-function(object,newdata,...) {
   l<-length(object[[1]])
   Y_pred_matrix<-matrix(0,dim(newdata)[1],l)
+
   for(i in 1:l) {
     main_effects<-object[[1]][[i]]
     beta_main<-object[[2]][[i]]
     intr_effects<-object[[3]][[i]]
     beta_intr<-object[[4]][[i]]
     intercept<-object[[6]][i]
-    Y_pred_matrix[,i]<-intercept+newdata[,main_effects]%*%beta_main+(newdata[,intr_effects[1,]]*newdata[,intr_effects[2,]])%*%beta_intr
+    Y_pred_matrix[,i]<-intercept+newdata[,main_effects,drop=F]%*%beta_main+(newdata[,intr_effects[1,],drop=F]*newdata[,intr_effects[2,],drop=F])%*%beta_intr
   }
   return(Y_pred_matrix)
 }
